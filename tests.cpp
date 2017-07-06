@@ -28,6 +28,18 @@ int main() {
 
 template<typename T>
 void
+tests::matrixSub(std::vector<T> &test_vector1, std::vector<T> &test_vector2) {
+    matrix<T> vec1(test_vector1, 10, 10);
+    matrix<T> vec2(test_vector2, 10, 10);
+    matrix<T> vec3(10, 10);
+    std::vector<T> answer_vector = vectorGen(vec1);
+    matrix<T> vec_answer(answer_vector, 10, 10);
+    vec3.subtract(vec1, vec2);
+    testAsssertion(vec3, vec_answer, "Subtraction");
+
+}
+template<typename T>
+void
 tests::matrixMath(std::vector<T> &test_vector1, std::vector<T> &test_vector2,
                   std::vector<T> &answer_vector, std::string name) {
     matrix<T> vec1(test_vector1, 10, 10);

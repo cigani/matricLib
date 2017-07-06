@@ -45,7 +45,10 @@ public:
     testAsssertion(matrix<T> expected, matrix<T> actual, std::string name);
 
     template<typename T>
-    std::vector<T> vectorGen(matrix<T> &array);
+    static std::vector<T> vectorGen(matrix<T> &array);
+
+    template<typename T>
+    void matrixSub(std::vector<T> &test_vector1, std::vector<T> &test_vector2);
 };
 
 
