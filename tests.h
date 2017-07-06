@@ -21,6 +21,7 @@ public:
                                                        (float) 0.1);
     std::vector<int> additionVector = valueRange.range(0, 200, 2);
 
+
     template<typename T>
     void testAsssertion(std::vector<T> expected, std::vector<T> actual,
                         std::string name);
@@ -43,7 +44,8 @@ public:
     void
     testAsssertion(matrix<T> expected, matrix<T> actual, std::string name);
 
-
+    template<typename T>
+    std::vector<T> vectorGen(matrix<T> &array);
 };
 
 

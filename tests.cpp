@@ -10,6 +10,9 @@
 int main() {
     /// Tests declare
     tests tests;
+
+    /// Misc Variables
+
     /// Structure tests
     tests.matrixEqual(tests.intVector1, "int vector 1");
     tests.matrixEqual(tests.doubleVector1, "double vector 1");
@@ -20,7 +23,6 @@ int main() {
                      "Addition");
     /// Error Logging
     tests.iterateVectors(tests.mErrors);
-
     return 0;
 }
 
@@ -101,4 +103,11 @@ void tests::iterateVectors(std::vector<std::string> &returns) {
 
 void tests::testErrorCode(std::string &ErrorType) {
     mErrors.push_back(ErrorType);
+}
+
+template<typename T>
+std::vector<T> tests::vectorGen(matrix<T> &array) {
+    int dims = (array.columns * array.rows);
+    std::vector<T> vector(dims);
+    return vector;
 }

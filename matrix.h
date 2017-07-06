@@ -15,16 +15,12 @@ class matrix {
 public:
     T *vector;
     std::vector<T> matrixVector;
-
     matrix(std::vector<T> &array, int _M, int _N) : rows(_M), columns(_N),
                                                     vector(array.data()) {}
-
     matrix() {}
-
     matrix(int _M, int _N) : rows(_M), columns(_N) {
         matrixVector.reserve(_M * _N);
     };
-
     ~matrix() {}
 
     /// Psuedo-2D arrray from a 1D array
@@ -59,6 +55,7 @@ public:
             }
         }
     }
+
     int rows;
     int columns;
 private:
