@@ -34,6 +34,7 @@ tests::matrixMath(std::vector<T> &test_vector1, std::vector<T> &test_vector2,
     matrix<T> vec3(10, 10);
     matrix<T> vec_answer(answer_vector, 10, 10);
     vec3.add(vec1, vec2);
+
     testAsssertion(vec3, vec_answer, name);
 //    for (auto i = 0; i < 10; i++) {
 //        for (auto j = 0; j < 10; j++) {
