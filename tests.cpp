@@ -21,7 +21,6 @@ int main() {
     /// Error Logging
     tests.iterateVectors(tests.mErrors);
 
-
     return 0;
 }
 

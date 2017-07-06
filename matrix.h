@@ -50,6 +50,15 @@ public:
             }
         }
     };
+
+    void subtract(matrix<T> &mat1, matrix<T> &mat2) {
+        for (int i = 0; i < mat1.columns; i++) {
+            for (int j = 0; j < mat1.rows; j++) {
+                matrixVector.push_back(mat1(i, j) - mat2(i, j));
+
+            }
+        }
+    }
     int rows;
     int columns;
 private:

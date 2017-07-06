@@ -234,3 +234,6 @@ ENV/
 
 # Rope project settings
 .ropeproject
+/LICENSE
+/README.md
+/.gitignore
