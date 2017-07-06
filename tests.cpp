@@ -13,6 +13,7 @@ int main() {
     /// Structure tests
     tests.matrixEqual(tests.intVector1, "int vector 1");
     tests.matrixEqual(tests.doubleVector1, "double vector 1");
+
     tests.matrixEqual(tests.floatVector1, "float vector 1");
 
     /// Binary Operation tests
