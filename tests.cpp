@@ -19,13 +19,35 @@ int main() {
     tests.matrixEqual(tests.floatVector1, "float vector 1");
 
     /// Binary Operation tests
-    tests.matrixMath(tests.intVector1, tests.intVector1, tests.additionVector,
-                     "Addition");
+    tests.matrixAdd(tests.intVector1, tests.intVector1, tests.additionVector,
+                    "Addition");
+    tests.matrixAdd(tests.doubleVector1, tests.doubleVector1,
+                    tests.additionVectorDouble, "Double addition");
+    tests.matrixSub(tests.intVector1, tests.intVector1);
+    tests.matrixSub(tests.doubleVector1, tests.doubleVector1);
+
+    /// Manipulation
+    tests.matrixTranpose(tests.non_transposedMatrix, tests.tranposeMatrix);
+
     /// Error Logging
     tests.iterateVectors(tests.mErrors);
+
+
     return 0;
 }
 
+
+template<typename T>
+void
+tests::matrixTranpose(std::vector<T> &test_vector,
+                      std::vector<T> &transposed) {
+    matrix<int> trans(test_vector, 4, 4);
+    matrix<int> real_trans(transposed, 4, 4);
+    trans.transpose();
+    testAsssertion(trans, real_trans, "Transpose");
+
+
+}
 template<typename T>
 void
 tests::matrixSub(std::vector<T> &test_vector1, std::vector<T> &test_vector2) {
@@ -40,8 +62,8 @@ tests::matrixSub(std::vector<T> &test_vector1, std::vector<T> &test_vector2) {
 }
 template<typename T>
 void
-tests::matrixMath(std::vector<T> &test_vector1, std::vector<T> &test_vector2,
-                  std::vector<T> &answer_vector, std::string name) {
+tests::matrixAdd(std::vector<T> &test_vector1, std::vector<T> &test_vector2,
+                 std::vector<T> &answer_vector, std::string name) {
     matrix<T> vec1(test_vector1, 10, 10);
     matrix<T> vec2(test_vector2, 10, 10);
     matrix<T> vec3(10, 10);

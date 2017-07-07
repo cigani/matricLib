@@ -13,8 +13,8 @@
 template<typename T>
 class matrix {
 public:
-    T *vector;
-    std::vector<T> matrixVector;
+
+
     matrix(std::vector<T> &array, int _M, int _N) : rows(_M), columns(_N),
                                                     vector(array.data()) {}
     matrix() {}
@@ -23,15 +23,21 @@ public:
     };
     ~matrix() {}
 
+    // Activate transpose
+    void transpose() { tranposed_matrix = true; }
     /// Psuedo-2D arrray from a 1D array
     T operator()(int i, int j) {
         if (!matrixVector.empty()) {
             return !(i < rows && j <= columns) ? throw std::invalid_argument(
                     "Operator Matrix () out of bonds") : matrixVector[
                            i * (columns) + j];
+        } else if (tranposed_matrix) {
+            return !(i < rows && j <= columns) ? throw std::invalid_argument(
+                    "Operator Matrix () out of bonds") : vector[j * (rows) +
+                                                                i];
         } else {
             return !(i < rows && j <= columns) ? throw std::invalid_argument(
-                    "Operator Matrix () out of bonds") : vector[i * (columns) +
+                    "Operator Matrix () out of bonds") : vector[i * (rows) +
                                                                 j];
         }
     }
@@ -56,11 +62,14 @@ public:
         }
     }
 
+    /// Hold the dimensions of the matrix
     int rows;
     int columns;
 private:
-    /// Hold the dimensions of the matrix
 
+    T *vector;
+    std::vector<T> matrixVector;
+    bool tranposed_matrix = false;
 };
 
 

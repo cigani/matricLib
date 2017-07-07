@@ -20,6 +20,13 @@ public:
                                                        (float) 10.0,
                                                        (float) 0.1);
     std::vector<int> additionVector = valueRange.range(0, 200, 2);
+    std::vector<double> additionVectorDouble = valueRange.range(0., 200., 2.);
+    std::vector<int> non_transposedMatrix{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+                                          12, 13, 14, 15, 16};
+    std::vector<int> tranposeMatrix = {1, 5, 9, 13,
+                                       2, 6, 10, 14,
+                                       3, 7, 11, 15,
+                                       4, 8, 12, 16};
 
 
     template<typename T>
@@ -37,8 +44,8 @@ public:
     void matrixEqual(std::vector<T> &theVector, std::string a_name);
 
     template<typename T>
-    void matrixMath(std::vector<T> &test_vector1, std::vector<T> &test_vector2,
-                    std::vector<T> &answer_vector, std::string name);
+    void matrixAdd(std::vector<T> &test_vector1, std::vector<T> &test_vector2,
+                   std::vector<T> &answer_vector, std::string name);
 
     template<typename T>
     void
@@ -49,6 +56,10 @@ public:
 
     template<typename T>
     void matrixSub(std::vector<T> &test_vector1, std::vector<T> &test_vector2);
+
+    template<typename T>
+    void
+    matrixTranpose(std::vector<T> &test_vector, std::vector<T> &transposed);
 };
 
 
