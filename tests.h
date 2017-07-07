@@ -59,22 +59,11 @@ public:
                    std::vector<T> &answer_vector, std::string name);
 
     template<typename T>
-    void
-    testAsssertion(matrix<T> expected, matrix<T> actual, std::string name);
-
-    template<typename T>
     static std::vector<T> vectorGen(matrix<T> &array);
-
-    template<typename T>
-    void matrixSub(std::vector<T> &test_vector1, std::vector<T> &test_vector2);
 
     template<typename T>
     void
     matrixTranpose(std::vector<T> &test_vector, std::vector<T> &transposed);
-
-    template<typename T>
-    void testAsssertion(std::vector<T> expected, std::vector<T> actual,
-                        std::string name, double timer);
 
     template<typename T>
     void testAsssertion(matrix<T> expected, matrix<T> actual, std::string name,

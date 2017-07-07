@@ -7,11 +7,30 @@
 #include <iterator>
 #include <ctime>
 #include <iomanip>
+#include <fstream>
 #include "tests.h"
 
 int main() {
     /// Tests declare
     tests tests;
+    std::ifstream in;
+    in.open("longmatrix.dat");
+    vector <vector<int>> result;
+    while (!in.eof()) {
+        //go through every line
+        int line;
+        vector<int> tmp;
+        size_t pos = std::string::npos;
+        std::getline(in, line);
+        //loop through the ,
+        while ((pos = line.find_first_of(",")) != string::npos) {
+            //extract the component sans ,
+            tmp.push_back(line.substr(0, pos - 1));
+            //erase the val including ,
+            line.erase(0, pos);
+        }
+        result.push_back(tmp);
+    }
 
     // Misc Variables
 
@@ -162,8 +181,8 @@ void tests::testAsssertion(matrix<T> expected,
                            double timer) {
     mTimingName.push_back(name);
     mTiming.push_back(timer);
-    for (int i = 0; i < actual.columns; i++) {
-        for (int j = 0; j < actual.rows; j++) {
+    for (int i = 0; i < actual.getColumns(); i++) {
+        for (int j = 0; j < actual.getRows(); j++) {
             auto evaluate = expected(i, j) - actual(i, j);
             if (fabs(evaluate > tolerance)) {
                 testErrorCode(name);
@@ -193,7 +212,7 @@ void tests::testErrorCode(std::string &ErrorType) {
 
 template<typename T>
 std::vector<T> tests::vectorGen(matrix<T> &array) {
-    int dims = (array.columns * array.rows);
+    int dims = (array.getColumns() * array.getRows());
     std::vector<T> vector(dims);
     return vector;
 }

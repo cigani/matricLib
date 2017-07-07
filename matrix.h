@@ -81,10 +81,13 @@ public:
                                         mat1(y, z) * mat2(z, x);
     }
     /// Hold the dimensions of the matrix
+    int getRows() { return rows; }
+
+    int getColumns() { return columns; }
+
+private:
     int rows;
     int columns;
-private:
-
     T *vector;
     std::vector<T> matrixVector;
     bool transposedMatrix = false;
