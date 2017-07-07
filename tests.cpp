@@ -13,24 +13,6 @@
 int main() {
     /// Tests declare
     tests tests;
-    std::ifstream in;
-    in.open("longmatrix.dat");
-    vector <vector<int>> result;
-    while (!in.eof()) {
-        //go through every line
-        int line;
-        vector<int> tmp;
-        size_t pos = std::string::npos;
-        std::getline(in, line);
-        //loop through the ,
-        while ((pos = line.find_first_of(",")) != string::npos) {
-            //extract the component sans ,
-            tmp.push_back(line.substr(0, pos - 1));
-            //erase the val including ,
-            line.erase(0, pos);
-        }
-        result.push_back(tmp);
-    }
 
     // Misc Variables
 

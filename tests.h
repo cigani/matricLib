@@ -40,6 +40,7 @@ public:
                                        314, 356, 398, 440,
                                        426, 484, 542, 600};
 
+    //TODO: Need a CSV reader.
     template<typename T>
     void testAsssertion(std::vector<T> expected, std::vector<T> actual,
                         std::string name);
