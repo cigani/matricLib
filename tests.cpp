@@ -104,7 +104,6 @@ tests::matrixAdd(std::vector<T> &test_vector1, std::vector<T> &test_vector2,
 
 template<typename T>
 void tests::matrixEqual(std::vector<T> &theVector, std::string a_name) {
-    clock_t tStart = clock();
     matrix<T> new_vector(theVector, 10, 10);
     std::vector<T> test_vector;
     for (auto i = 0; i < 10; i++) {
@@ -114,25 +113,23 @@ void tests::matrixEqual(std::vector<T> &theVector, std::string a_name) {
             test_vector.push_back(new_vector(i, j));
         }
     }
-    double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
-    testAsssertion(theVector, test_vector, a_name, timer);
+    testAsssertion(theVector, test_vector, a_name);
 }
-//
-//template<typename T>
-//void tests::testAsssertion(std::vector<T> expected,
-//                           std::vector<T> actual,
-//                           std::string name,
-//                           double timer) {
-//    for (unsigned long i = 0; i < actual.size(); i++) {
-//        double evaluate = expected.at(i) - actual.at(i);
-//        if (fabs(evaluate) > tolerance) {
-//            testErrorCode(name);
-//            break;
-////            std::cout << "Expected: " << expected[i] << " | "
-////                      << "Actual: " << actual[i] << "\n";
-//        }
-//    }
-//};
+
+template<typename T>
+void tests::testAsssertion(std::vector<T> expected,
+                           std::vector<T> actual,
+                           std::string name) {
+    for (unsigned long i = 0; i < actual.size(); i++) {
+        double evaluate = expected.at(i) - actual.at(i);
+        if (fabs(evaluate) > tolerance) {
+            testErrorCode(name);
+            break;
+//            std::cout << "Expected: " << expected[i] << " | "
+//                      << "Actual: " << actual[i] << "\n";
+        }
+    }
+};
 
 template<typename T>
 void tests::testAsssertion(matrix<T> expected,

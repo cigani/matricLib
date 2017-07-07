@@ -24,14 +24,14 @@ public:
     ~matrix() {}
 
     // Activate transpose
-    void transpose() { tranposed_matrix = true; }
+    void transpose() { transposedMatrix = true; }
     /// Psuedo-2D arrray from a 1D array
     T operator()(int i, int j) {
         if (!matrixVector.empty()) {
             return !(i < rows && j <= columns) ? throw std::invalid_argument(
                     "Operator Matrix () out of bonds") : matrixVector[
                            i * (columns) + j];
-        } else if (tranposed_matrix) {
+        } else if (transposedMatrix) {
             return !(i < rows && j <= columns) ? throw std::invalid_argument(
                     "Operator Matrix () out of bonds") : vector[j * (rows) +
                                                                 i];
@@ -41,8 +41,6 @@ public:
                                                                 j];
         }
     }
-
-    void append(T value) { matrixVector.push_back(value); }
 
     void add(matrix<T> &mat1, matrix<T> &mat2) {
         for (int i = 0; i < mat1.columns; i++) {
@@ -69,7 +67,7 @@ private:
 
     T *vector;
     std::vector<T> matrixVector;
-    bool tranposed_matrix = false;
+    bool transposedMatrix = false;
 };
 
 
