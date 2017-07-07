@@ -5,6 +5,8 @@
 #include <vector>
 #include <iostream>
 #include <iterator>
+#include <ctime>
+#include <iomanip>
 #include "tests.h"
 
 int main() {
@@ -23,14 +25,22 @@ int main() {
                     "Addition");
     tests.matrixAdd(tests.doubleVector1, tests.doubleVector1,
                     tests.additionVectorDouble, "Double addition");
-    tests.matrixSub(tests.intVector1, tests.intVector1);
-    tests.matrixSub(tests.doubleVector1, tests.doubleVector1);
+    tests.matrixAdd(tests.intVectorLarge, tests.intVectorLarge,
+                    tests.additionVectorLarge, "Large Int Addition");
+    tests.matrixAdd(tests.doubleVectorLarge, tests.doubleVectorLarge,
+                    tests.additionVectorDoubleLarge, "Large double addition");
+    tests.matrixSub(tests.intVector1, tests.intVector1, "Integer Subtraction");
+    tests.matrixSub(tests.doubleVector1, tests.doubleVector1,
+                    "Double Subtraction");
 
     /// Manipulation
     tests.matrixTranpose(tests.non_transposedMatrix, tests.tranposeMatrix);
 
     /// Error Logging
     tests.iterateVectors(tests.mErrors);
+
+    /// Timing
+    tests.timing();
 
 
     return 0;
@@ -41,36 +51,46 @@ template<typename T>
 void
 tests::matrixTranpose(std::vector<T> &test_vector,
                       std::vector<T> &transposed) {
+    clock_t tStart = clock();
     matrix<int> trans(test_vector, 4, 4);
     matrix<int> real_trans(transposed, 4, 4);
     trans.transpose();
-    testAsssertion(trans, real_trans, "Transpose");
+    double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
+    testAsssertion(trans, real_trans, "Transpose", timer);
 
 
 }
+
 template<typename T>
 void
-tests::matrixSub(std::vector<T> &test_vector1, std::vector<T> &test_vector2) {
-    matrix<T> vec1(test_vector1, 10, 10);
-    matrix<T> vec2(test_vector2, 10, 10);
-    matrix<T> vec3(10, 10);
+tests::matrixSub(std::vector<T> &test_vector1, std::vector<T> &test_vector2,
+                 std::string name) {
+    clock_t tStart = clock();
+    auto dim = (T) sqrt(test_vector1.size());
+    matrix<T> vec1(test_vector1, dim, dim);
+    matrix<T> vec2(test_vector2, dim, dim);
+    matrix<T> vec3(dim, dim);
     std::vector<T> answer_vector = vectorGen(vec1);
-    matrix<T> vec_answer(answer_vector, 10, 10);
+    matrix<T> vec_answer(answer_vector, dim, dim);
     vec3.subtract(vec1, vec2);
-    testAsssertion(vec3, vec_answer, "Subtraction");
+    double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
+    testAsssertion(vec3, vec_answer, name, timer);
 
 }
+
 template<typename T>
 void
 tests::matrixAdd(std::vector<T> &test_vector1, std::vector<T> &test_vector2,
                  std::vector<T> &answer_vector, std::string name) {
-    matrix<T> vec1(test_vector1, 10, 10);
-    matrix<T> vec2(test_vector2, 10, 10);
-    matrix<T> vec3(10, 10);
-    matrix<T> vec_answer(answer_vector, 10, 10);
+    int dim = (int) sqrt(test_vector1.size());
+    clock_t tStart = clock();
+    matrix<T> vec1(test_vector1, dim, dim);
+    matrix<T> vec2(test_vector2, dim, dim);
+    matrix<T> vec3(dim, dim);
+    matrix<T> vec_answer(answer_vector, dim, dim);
     vec3.add(vec1, vec2);
-
-    testAsssertion(vec3, vec_answer, name);
+    double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
+    testAsssertion(vec3, vec_answer, name, timer);
 //    for (auto i = 0; i < 10; i++) {
 //        for (auto j = 0; j < 10; j++) {
 //            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
@@ -81,6 +101,7 @@ tests::matrixAdd(std::vector<T> &test_vector1, std::vector<T> &test_vector2,
 
 template<typename T>
 void tests::matrixEqual(std::vector<T> &theVector, std::string a_name) {
+    clock_t tStart = clock();
     matrix<T> new_vector(theVector, 10, 10);
     std::vector<T> test_vector;
     for (auto i = 0; i < 10; i++) {
@@ -90,13 +111,15 @@ void tests::matrixEqual(std::vector<T> &theVector, std::string a_name) {
             test_vector.push_back(new_vector(i, j));
         }
     }
-    testAsssertion(theVector, test_vector, a_name);
+    double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
+    testAsssertion(theVector, test_vector, a_name, timer);
 }
 
 template<typename T>
 void tests::testAsssertion(std::vector<T> expected,
                            std::vector<T> actual,
-                           std::string name) {
+                           std::string name,
+                           double timer) {
     for (unsigned long i = 0; i < actual.size(); i++) {
         double evaluate = expected.at(i) - actual.at(i);
         if (fabs(evaluate) > tolerance) {
@@ -111,8 +134,10 @@ void tests::testAsssertion(std::vector<T> expected,
 template<typename T>
 void tests::testAsssertion(matrix<T> expected,
                            matrix<T> actual,
-                           std::string name) {
-
+                           std::string name,
+                           double timer) {
+    mTimingName.push_back(name);
+    mTiming.push_back(timer);
     for (int i = 0; i < actual.columns; i++) {
         for (int j = 0; j < actual.rows; j++) {
             auto evaluate = expected(i, j) - actual(i, j);
@@ -144,4 +169,12 @@ std::vector<T> tests::vectorGen(matrix<T> &array) {
     int dims = (array.columns * array.rows);
     std::vector<T> vector(dims);
     return vector;
+}
+
+void tests::timing() {
+    for (int i = 0; i < mTiming.size(); i++) {
+        std::cout << "Function: " << std::setprecision(9) << mTimingName.at(i)
+                  << "\t" << "Timing: "
+                  << std::setprecision(9) << mTiming.at(i) << std::endl;
+    }
 }
