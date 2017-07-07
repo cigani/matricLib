@@ -13,53 +13,67 @@ int main() {
     /// Tests declare
     tests tests;
 
-    /// Misc Variables
+    // Misc Variables
 
-    /// Structure tests
-//    tests.matrixEqual(tests.intVector1, "int vector 1");
-//    tests.matrixEqual(tests.doubleVector1, "double vector 1");
-//    tests.matrixEqual(tests.floatVector1, "float vector 1");
-//
-//    /// Binary Operation tests
-//    tests.matrixAdd(tests.intVector1, tests.intVector1, tests.additionVector,
-//                    "Addition");
-//    tests.matrixAdd(tests.doubleVector1, tests.doubleVector1,
-//                    tests.additionVectorDouble, "Double addition");
-//    tests.matrixAdd(tests.intVectorLarge, tests.intVectorLarge,
-//                    tests.additionVectorLarge, "Large Int Addition");
-//    tests.matrixAdd(tests.doubleVectorLarge, tests.doubleVectorLarge,
-//                    tests.additionVectorDoubleLarge, "Large double addition");
-//    tests.matrixSub(tests.intVector1, tests.intVector1, "Integer Subtraction");
-//    tests.matrixSub(tests.doubleVector1, tests.doubleVector1,
-//                    "Double Subtraction");
-//    tests.matrixSub(tests.additionVectorDoubleLarge,
-//                    tests.additionVectorDoubleLarge,
-//                    "Large double subtraction");
+    // Structure tests
+    tests.matrixEqual(tests.intVector1, "int vector 1");
+    tests.matrixEqual(tests.doubleVector1, "double vector 1");
+    tests.matrixEqual(tests.floatVector1, "float vector 1");
+
+    /// Binary Operation tests
+    tests.matrixAdd(tests.intVector1, tests.intVector1, tests.additionVector,
+                    "Addition");
+    tests.matrixAdd(tests.doubleVector1, tests.doubleVector1,
+                    tests.additionVectorDouble, "Double addition");
+    tests.matrixAdd(tests.intVectorLarge, tests.intVectorLarge,
+                    tests.additionVectorLarge, "Large Int Addition");
+    tests.matrixAdd(tests.doubleVectorLarge, tests.doubleVectorLarge,
+                    tests.additionVectorDoubleLarge, "Large double addition");
+    tests.matrixSub(tests.intVector1, tests.intVector1, "Integer Subtraction");
+    tests.matrixSub(tests.doubleVector1, tests.doubleVector1,
+                    "Double Subtraction");
+    tests.matrixSub(tests.additionVectorDoubleLarge,
+                    tests.additionVectorDoubleLarge,
+                    "Large double subtraction");
 
     /// Manipulation
     tests.matrixTranpose(tests.non_transposedMatrix, tests.tranposeMatrix);
 
+    /// Non-Binary Ops
+    tests.matrixMultiply(tests.non_transposedMatrix, 4,
+                         tests.non_transposedMatrix, 4, tests.multiplyMatrix,
+                         "Integer Multiplication");
     /// Error Logging
     tests.iterateVectors(tests.mErrors);
 
-    matrix<int> holder(4, 4);
-    matrix<int> tran(tests.non_transposedMatrix, 4, 4);
-    holder.multiply(tran, tran);
-    for (auto i = 0; i < 4; i++) {
-        for (auto j = 0; j < 4; j++) {
-            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
-                      holder(i, j) << " = " << tran(i, j) << std::endl;
-        }
-    }
 
-    /// Timing
+
+    // Timing
     tests.timing();
 
 
     return 0;
 }
 
-
+template<typename T>
+void
+tests::matrixMultiply(std::vector<T> &test_vector1,
+                      int tv1Rows,
+                      std::vector<T> &test_vector2,
+                      int tv2Rows,
+                      std::vector<T> &expected,
+                      std::string name) {
+    int col1 = test_vector1.size() / tv1Rows;
+    int col2 = test_vector2.size() / tv2Rows;
+    clock_t tStart = clock();
+    matrix<T> matrix1(test_vector1, tv1Rows, col1);
+    matrix<T> matrix2(test_vector2, tv2Rows, col2);
+    matrix<T> holder(tv1Rows, col2);
+    matrix<T> actual(expected, tv1Rows, col2);
+    holder.multiply(matrix1, matrix2);
+    double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
+    testAsssertion(actual, holder, name, timer);
+}
 template<typename T>
 void
 tests::matrixTranpose(std::vector<T> &test_vector,
@@ -79,7 +93,7 @@ void
 tests::matrixSub(std::vector<T> &test_vector1, std::vector<T> &test_vector2,
                  std::string name) {
     clock_t tStart = clock();
-    auto dim = (T) sqrt(test_vector1.size());
+    int dim = (int) sqrt(test_vector1.size());
     matrix<T> vec1(test_vector1, dim, dim);
     matrix<T> vec2(test_vector2, dim, dim);
     matrix<T> vec3(dim, dim);
@@ -167,6 +181,9 @@ void tests::iterateVectors(std::vector<std::string> &returns) {
     if (returns.size() == 0) { std::cout << "No Errors"; }
     else { for (auto n: returns) { std::cout << "Error: " << n << "\n"; }}
     std::cout << std::endl;
+    std::cout
+            << "--------------------------------------------------------------"
+            << "\n";
 
 };
 

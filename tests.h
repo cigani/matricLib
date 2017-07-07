@@ -35,7 +35,10 @@ public:
                                        2, 6, 10, 14,
                                        3, 7, 11, 15,
                                        4, 8, 12, 16};
-
+    std::vector<int> multiplyMatrix = {90, 100, 110, 120,
+                                       202, 228, 254, 280,
+                                       314, 356, 398, 440,
+                                       426, 484, 542, 600};
 
     template<typename T>
     void testAsssertion(std::vector<T> expected, std::vector<T> actual,
@@ -82,6 +85,11 @@ public:
     template<typename T>
     void matrixSub(std::vector<T> &test_vector1, std::vector<T> &test_vector2,
                    std::string name);
+
+    template<typename T>
+    void matrixMultiply(std::vector<T> &test_vector1, int tv1Rows,
+                        std::vector<T> &test_vector2, int tv2Rows,
+                        std::vector<T> &expected, std::string name);
 };
 
 
