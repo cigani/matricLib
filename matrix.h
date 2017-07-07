@@ -9,6 +9,7 @@
 #include <vector>
 #include <iostream>
 
+#define TILE 2
 
 template<typename T>
 class matrix {
@@ -60,6 +61,25 @@ public:
         }
     }
 
+
+    void multiply(matrix<T> &mat1, matrix<T> &mat2) {
+        multiply_tiled(mat1, mat2);
+    }
+
+    void multiply_tiled(matrix<T> &mat1, matrix<T> &mat2) {
+        int N = (mat1.rows);
+        /* Use tile by tile  tiles */
+        /* Loop over all the tiles, stride by tile size */
+        for (int i = 0; i < N; i += TILE)
+            for (int j = 0; j < N; j += TILE)
+                for (int k = 0; k < N; k += TILE)
+                    /* Regular multiply inside the tiles */
+                    for (int y = i; y < i + TILE; y++)
+                        for (int x = j; x < j + TILE; x++)
+                            for (int z = k; z < k + TILE; z++)
+                                matrixVector[y + rows * x] +=
+                                        mat1(y, z) * mat2(z, x);
+    }
     /// Hold the dimensions of the matrix
     int rows;
     int columns;
