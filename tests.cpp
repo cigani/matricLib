@@ -32,6 +32,9 @@ int main() {
     tests.matrixSub(tests.intVector1, tests.intVector1, "Integer Subtraction");
     tests.matrixSub(tests.doubleVector1, tests.doubleVector1,
                     "Double Subtraction");
+    tests.matrixSub(tests.additionVectorDoubleLarge,
+                    tests.additionVectorDoubleLarge,
+                    "Large double subtraction");
 
     /// Manipulation
     tests.matrixTranpose(tests.non_transposedMatrix, tests.tranposeMatrix);
@@ -114,22 +117,22 @@ void tests::matrixEqual(std::vector<T> &theVector, std::string a_name) {
     double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
     testAsssertion(theVector, test_vector, a_name, timer);
 }
-
-template<typename T>
-void tests::testAsssertion(std::vector<T> expected,
-                           std::vector<T> actual,
-                           std::string name,
-                           double timer) {
-    for (unsigned long i = 0; i < actual.size(); i++) {
-        double evaluate = expected.at(i) - actual.at(i);
-        if (fabs(evaluate) > tolerance) {
-            testErrorCode(name);
-            break;
-//            std::cout << "Expected: " << expected[i] << " | "
-//                      << "Actual: " << actual[i] << "\n";
-        }
-    }
-};
+//
+//template<typename T>
+//void tests::testAsssertion(std::vector<T> expected,
+//                           std::vector<T> actual,
+//                           std::string name,
+//                           double timer) {
+//    for (unsigned long i = 0; i < actual.size(); i++) {
+//        double evaluate = expected.at(i) - actual.at(i);
+//        if (fabs(evaluate) > tolerance) {
+//            testErrorCode(name);
+//            break;
+////            std::cout << "Expected: " << expected[i] << " | "
+////                      << "Actual: " << actual[i] << "\n";
+//        }
+//    }
+//};
 
 template<typename T>
 void tests::testAsssertion(matrix<T> expected,
@@ -172,7 +175,7 @@ std::vector<T> tests::vectorGen(matrix<T> &array) {
 }
 
 void tests::timing() {
-    for (int i = 0; i < mTiming.size(); i++) {
+    for (unsigned int i = 0; i < mTiming.size(); i++) {
         std::cout << "Function: " << std::setprecision(9) << mTimingName.at(i)
                   << "\t" << "Timing: "
                   << std::setprecision(9) << mTiming.at(i) << std::endl;
