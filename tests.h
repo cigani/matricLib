@@ -5,7 +5,13 @@
 #ifndef MATRIX_TESTS_H
 #define MATRIX_TESTS_H
 
-
+#include <vector>
+#include <iostream>
+#include <iterator>
+#include <ctime>
+#include <iomanip>
+#include <fstream>
+#include <math.h>   /* fabs */
 #include "helper.h"
 #include "matrix.h"
 

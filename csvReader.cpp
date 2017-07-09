@@ -3,8 +3,6 @@
 //
 
 #include "csvReader.h"
-#include <cassert>
-#include <sstream>
 
 csvReader::csvReader(std::string input) {
     filename = input;
@@ -22,7 +20,14 @@ void csvReader::read() {
     assert(fin.is_open());
     std::string line;
     while (std::getline(fin, line)) {                       // for each line
-        mCSV.push_back(std::stod(line));          // add to the current row
+        std::istringstream sString(line);
+        while (sString) {
+            std::string compString;
+            if (!getline(sString, compString, ',')) {
+                continue;
+            }
+            mCSV.push_back(std::stod(line));          // add to the current row
+        }
     }
 }
 

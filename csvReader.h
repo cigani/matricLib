@@ -9,10 +9,10 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <cassert>
 
 class csvReader {
-
-
 private:
     /// System of <doubles> expressions.
     std::vector<double> mCSV;

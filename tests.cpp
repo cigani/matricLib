@@ -2,12 +2,6 @@
 // Created by jam on 05-Jul-17.
 //
 
-#include <vector>
-#include <iostream>
-#include <iterator>
-#include <ctime>
-#include <iomanip>
-#include <fstream>
 #include "tests.h"
 
 int main() {
