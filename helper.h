@@ -37,15 +37,6 @@ public:
     std::vector<IntType> range(IntType start, IntType stop) {
         return range(start, stop, IntType(1));
     }
-
-    template<typename IntType>
-    std::vector<std::vector<IntType>> reshape(std::vector<IntType> &array) {
-        auto dimension = sqrt(array.size());
-        std::vector<std::vector<IntType>> result;
-        for (auto n: array) {
-
-        }
-    }
 };
 
 
