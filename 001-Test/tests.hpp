@@ -12,8 +12,8 @@
 #include <iomanip>
 #include <fstream>
 #include <math.h>   /* fabs */
-#include "helper.hpp"
-#include "matrix.hpp"
+#include "../000-Main/helper.hpp"
+#include "../000-Main/matrix.hpp"
 
 class tests {
 public:
