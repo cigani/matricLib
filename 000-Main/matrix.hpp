@@ -46,12 +46,14 @@ public:
                            i * (_columns) + j];
         } else if (transposedMatrix) {
             return !(i < _rows && j <= _columns) ? throw std::invalid_argument(
-                    "Operator Matrix () out of bonds") : vector[j * (_rows) +
-                                                                i];
+                    "Operator Matrix () out of bonds") : vector[
+                           j * (_columns) +
+                           i];
         } else {
             return !(i < _rows && j <= _columns) ? throw std::invalid_argument(
-                    "Operator Matrix () out of bonds") : vector[i * (_rows) +
-                                                                j];
+                    "Operator Matrix () out of bonds") : vector[
+                           i * (_columns) +
+                           j];
         }
     }
 
