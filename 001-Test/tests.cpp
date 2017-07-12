@@ -45,8 +45,6 @@ int main() {
 
     // Timing
     tests.timing();
-    csvReader<int> csvr("test.csv");
-    csvr.print();
     return 0;
 }
 
