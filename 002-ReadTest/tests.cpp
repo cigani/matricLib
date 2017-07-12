@@ -5,6 +5,8 @@
 #include "../000-Main/csvReader.hpp"
 
 int main() {
-    csvReader csvr("test.csv");
+    csvReader<int> csvr("test.csv");
+    csvReader<float> csvReader1("test.csv");
+    csvReader<double> csvReader2("test.csv");
     csvr.print();
 }

@@ -4,16 +4,29 @@
 
 #include "csvReader.hpp"
 
-csvReader::csvReader(std::string input) {
+template
+class csvReader<int>;
+
+template
+class csvReader<float>;
+
+template
+class csvReader<double>;
+
+template<typename T>
+csvReader<T>::csvReader(std::string input) {
     filename = input;
     read();
 }
 
-csvReader::csvReader() {}
+template<typename T>
+csvReader<T>::csvReader() {}
 
-csvReader::~csvReader() {};
+template<typename T>
+csvReader<T>::~csvReader() {};
 
-void csvReader::read() {
+template<typename T>
+void csvReader<T>::read() {
     rows = 0;
     columns = 0;
     std::ifstream fin(filename);
@@ -31,18 +44,19 @@ void csvReader::read() {
     }
 }
 
-std::vector<double> csvReader::getValues() {
+template<typename T>
+std::vector<T> csvReader<T>::getValues() {
     return mCSV;
 }
 
-double csvReader::getValue(int i) {
+template<typename T>
+T csvReader<T>::getValue(int i) {
     return mCSV.at(i);
 }
 
-void csvReader::print() {
-    std::vector<double>::iterator row;
-
-    for (row = mCSV.begin(); row != mCSV.end(); ++row) {
-        std::cout << (*row) << std::endl;
-    };
+template<typename T>
+void csvReader<T>::print() {
+    for (auto n: mCSV) {
+        std::cout << n << std::endl;
+    }
 }

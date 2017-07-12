@@ -12,10 +12,11 @@
 #include <sstream>
 #include <cassert>
 
+template<typename T>
 class csvReader {
 private:
     /// System of <doubles> expressions.
-    std::vector<double> mCSV;
+    std::vector<T> mCSV;
 
     /// Filename to load our matrix from.
     std::string filename;
@@ -41,7 +42,7 @@ public:
     virtual ~csvReader();
 
     /// Method to return the values contained in the vector.
-    std::vector<double> getValues();
+    std::vector<T> getValues();
 
     /// Method to print out the equations
     void print();
@@ -49,7 +50,7 @@ public:
     /// \brief Method to return an individual equation from the system matrix
     /// \param i  The index of the value to be returned.
     /// \return  Returns a Expression which contains a single equation.
-    double getValue(int i);
+    T getValue(int i);
 };
 
 
