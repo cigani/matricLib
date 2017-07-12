@@ -17,7 +17,7 @@ void csvReader::read() {
     rows = 0;
     columns = 0;
     std::ifstream fin(filename);
-    assert(fin.is_open());
+//    assert(fin.is_open());
     std::string line;
     while (std::getline(fin, line)) {                       // for each line
         std::istringstream sString(line);

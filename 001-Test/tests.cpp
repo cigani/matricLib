@@ -3,6 +3,7 @@
 //
 
 #include "tests.hpp"
+#include "../000-Main/csvReader.hpp"
 
 int main() {
     /// Tests declare
@@ -44,7 +45,8 @@ int main() {
 
     // Timing
     tests.timing();
-
+    csvReader csvr("test.csv");
+    csvr.print();
     return 0;
 }
 
