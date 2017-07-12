@@ -33,7 +33,10 @@ public:
     ~matrix() {}
 
     // Activate transpose
-    void transpose() { transposedMatrix = true; }
+    void transpose(bool copy = false) {
+        transposedMatrix = true;
+        _copy = copy;
+    }
 
     /// Psuedo-2D arrray from a 1D array
     T operator()(int i, int j) {
@@ -102,6 +105,7 @@ private:
     T *vector;
     std::vector<T> matrixVector;
     bool transposedMatrix = false;
+    bool _copy = false;
 };
 
 
