@@ -38,34 +38,29 @@ int main() {
     tests.matrixMultiply(tests.non_transposedMatrix, 4,
                          tests.non_transposedMatrix, 4, tests.multiplyMatrix,
                          "Integer Multiplication");
+
+    /// Transforms
+
+    tests.matrixRotate(tests.rot, tests.realRot, 4, 4, "Rotation");
     /// Error Logging
     tests.iterateVectors(tests.mErrors);
 
 
-    std::vector<int> test{1, 2, 3, 4, 5, 6};
-    matrix<int> matrix1(test, 3, 2);
-    matrix1.transpose();
-    std::vector<int> rot{5, 1, 2, 6,
-                         1, 1, 9, 3,
-                         1, 1, 2, 3,
-                         8, 1, 2, 7};
-    std::vector<int> realRot{8, 1, 1, 5,
-                             1, 1, 1, 1,
-                             2, 2, 9, 2,
-                             7, 3, 3, 6};
-    matrix<int> matrix2(realRot, 4, 4);
-    matrix<int> matrix3(rot, 4, 4);
-    matrix3.rotate(90);
-    for (auto i = 0; i < 4; i++) {
-        for (auto j = 0; j < 4; j++) {
-            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
-                      matrix2(i, j) << " = " << matrix3(i, j) << std::endl;
-        }
-    }
-
     // Timing
-//    tests.timing();
+    tests.timing();
     return 0;
+}
+
+template<typename T>
+void
+tests::matrixRotate(std::vector<T> &test_vector1, std::vector<T> &expected,
+                    int rows, int columns, std::string name) {
+    clock_t tStart = clock();
+    matrix<int> actual(test_vector1, rows, columns);
+    matrix<int> holder(expected, rows, columns);
+    actual.rotate(90);
+    double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
+    testAsssertion(actual, holder, name, timer);
 }
 
 template<typename T>
