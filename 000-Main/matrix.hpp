@@ -122,6 +122,9 @@ public:
             case 90: {
                 rotate90pos();
             }
+            default: {
+                break;
+            }
 //            case -90: rotate90neg(this, _rows, _columns);
 //            case 180: rotate180pos(this, _rows, _columns);
 //            case -180: rotate180neg(this, _rows, _columns);
@@ -139,6 +142,10 @@ private:
     /// Rotation Work
     void rotate90pos() {
         transpose(true);
+        for (int i = 0; i < _rows; ++i)
+            for (int j = 0; j < _columns / 2; ++j)
+                std::swap(matrixVector[i][j],
+                          matrixVector[i][_columns - j - 1]);
 
 
     }
