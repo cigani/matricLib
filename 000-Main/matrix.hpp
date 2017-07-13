@@ -144,8 +144,8 @@ private:
         transpose(true);
         for (int i = 0; i < _rows; ++i)
             for (int j = 0; j < _columns / 2; ++j)
-                std::swap(matrixVector[i][j],
-                          matrixVector[i][_columns - j - 1]);
+                std::swap(matrixVector[(i * _columns) + j],
+                          matrixVector[(i * _columns) + _columns - j - 1]);
 
 
     }

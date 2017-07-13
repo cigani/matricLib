@@ -45,6 +45,23 @@ int main() {
     std::vector<int> test{1, 2, 3, 4, 5, 6};
     matrix<int> matrix1(test, 3, 2);
     matrix1.transpose();
+    std::vector<int> rot{5, 1, 2, 6,
+                         1, 1, 9, 3,
+                         1, 1, 2, 3,
+                         8, 1, 2, 7};
+    std::vector<int> realRot{8, 1, 1, 5,
+                             1, 1, 1, 1,
+                             2, 2, 9, 2,
+                             7, 3, 3, 6};
+    matrix<int> matrix2(realRot, 4, 4);
+    matrix<int> matrix3(rot, 4, 4);
+    matrix3.rotate(90);
+    for (auto i = 0; i < 4; i++) {
+        for (auto j = 0; j < 4; j++) {
+            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
+                      matrix2(i, j) << " = " << matrix3(i, j) << std::endl;
+        }
+    }
 
     // Timing
 //    tests.timing();
