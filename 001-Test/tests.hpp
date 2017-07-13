@@ -101,7 +101,7 @@ public:
     void
     matrixRotate(std::vector<T> &test_vector1, std::vector<T> &expected,
                  int rows,
-                 int columns, std::string name);
+                 int columns, std::string name, int value);
 };
 
 

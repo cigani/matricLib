@@ -41,7 +41,11 @@ int main() {
 
     /// Transforms
 
-    tests.matrixRotate(tests.rot, tests.realRot, 4, 4, "Rotation");
+    tests.matrixRotate(tests.rot, tests.realRot, 4, 4, "90+ Rotation", 90);
+//    tests.matrixRotate(tests.rot, tests.realRot, 4, 4, "90- Rotation", -90);
+
+
+
     /// Error Logging
     tests.iterateVectors(tests.mErrors);
 
@@ -54,13 +58,19 @@ int main() {
 template<typename T>
 void
 tests::matrixRotate(std::vector<T> &test_vector1, std::vector<T> &expected,
-                    int rows, int columns, std::string name) {
+                    int rows, int columns, std::string name, int value) {
     clock_t tStart = clock();
     matrix<int> actual(test_vector1, rows, columns);
     matrix<int> holder(expected, rows, columns);
-    actual.rotate(90);
+    actual.rotate(value);
     double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
     testAsssertion(actual, holder, name, timer);
+    for (auto i = 0; i < 4; i++) {
+        for (auto j = 0; j < 4; j++) {
+            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
+                      actual(i, j) << " = " << holder(i, j) << std::endl;
+        }
+    }
 }
 
 template<typename T>

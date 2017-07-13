@@ -36,7 +36,8 @@ public:
 
     // Activate transpose
     void transpose(bool copy = false) {
-        transposedMatrix = true;
+        (!transposedMatrix) ? (transposedMatrix = true)
+                            : (transposedMatrix = false);
         if (copy) {
             for (auto i = 0; i < _rows; i++) {
                 for (auto j = 0; j < _columns; j++) {
@@ -122,10 +123,10 @@ public:
             case 90: {
                 rotate90pos();
             }
+//            case -90: {rotate90neg();}
             default: {
                 break;
             }
-//            case -90: rotate90neg(this, _rows, _columns);
 //            case 180: rotate180pos(this, _rows, _columns);
 //            case -180: rotate180neg(this, _rows, _columns);
         }
@@ -137,19 +138,25 @@ private:
     T *vector;
     std::vector<T> matrixVector;
     bool transposedMatrix = false;
-    bool _copy = false;
 
     /// Rotation Work
     void rotate90pos() {
         transpose(true);
-        for (int i = 0; i < _rows; ++i)
-            for (int j = 0; j < _columns / 2; ++j)
+        for (int i = 0; i < _rows; ++i) {
+            for (int j = 0; j < _columns / 2; ++j) {
                 std::swap(matrixVector[(i * _columns) + j],
                           matrixVector[(i * _columns) + _columns - j - 1]);
-
-
+            }
+        }
     }
 
+    void rotate90neg() {
+        transpose(true);
+        for (int i = 0; i < _columns; i++) {
+            std::swap(matrixVector[(i)],
+                      matrixVector[(_columns * _rows) - (_columns - 1) + i]);
+        }
+    }
 };
 
 
