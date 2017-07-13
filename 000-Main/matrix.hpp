@@ -9,7 +9,7 @@
 #include <vector>
 #include <iostream>
 #include "csvReader.hpp"
-
+#include "rotation.h"
 template<typename T>
 class matrix {
 public:
@@ -57,6 +57,7 @@ public:
         }
     }
 
+    /// Binary operations
     void add(matrix<T> &mat1, matrix<T> &mat2) {
         for (int i = 0; i < mat1._columns; i++) {
             for (int j = 0; j < mat1._rows; j++) {
@@ -76,6 +77,7 @@ public:
     }
 
 
+    /// Cross Operations
     void multiply(matrix<T> &mat1, matrix<T> &mat2) {
         matrixVector.assign(_rows * _columns, 0);
         multiply_tiled(mat1, mat2);
@@ -101,6 +103,19 @@ public:
 
     int getColumns() { return _columns; }
 
+
+    /// Rotational work
+
+    void rotate(int degree) {
+        switch (degree) {
+            case 90:
+                r.rotate90pos(this, _rows, _columns);
+//            case -90: r.rotate90neg(this, _rows, _columns);
+//            case 180: r.rotate180pos(this, _rows, _columns);
+//            case -180: r.rotate180neg(this, _rows, _columns);
+        }
+    }
+
 private:
     int _rows;
     int _columns;
@@ -108,6 +123,7 @@ private:
     std::vector<T> matrixVector;
     bool transposedMatrix = false;
     bool _copy = false;
+    rotation r;
 };
 
 
