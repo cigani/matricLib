@@ -45,12 +45,6 @@ int main() {
     std::vector<int> test{1, 2, 3, 4, 5, 6};
     matrix<int> matrix1(test, 3, 2);
     matrix1.transpose();
-    for (auto i = 0; i < 2; i++) {
-        for (auto j = 0; j < 3; j++) {
-            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
-                      matrix1(i, j) << std::endl;
-        }
-    }
 
     // Timing
 //    tests.timing();
