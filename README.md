@@ -35,9 +35,5 @@ Returns the fouth ROW of the third COLUMN.
 
 # Tests
 
-####-------------------------------------------------------
-#####All functions must have tests before committing
-####-------------------------------------------------------
-
 All functions must have tests before commiting
 
