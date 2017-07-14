@@ -18,6 +18,9 @@ int main() {
     /// Binary Operation tests
     tests.matrixAdd(tests.intVector1, tests.intVector1, tests.additionVector,
                     "Addition");
+    tests.matrixAdd(tests.NonSquare1, tests.NonSquare1, tests.NonSquarePlus,
+                    "Non Square Addition");
+
     tests.matrixAdd(tests.doubleVector1, tests.doubleVector1,
                     tests.additionVectorDouble, "Double addition");
     tests.matrixAdd(tests.intVectorLarge, tests.intVectorLarge,
@@ -38,6 +41,9 @@ int main() {
     tests.matrixMultiply(tests.non_transposedMatrix, 4,
                          tests.non_transposedMatrix, 4, tests.multiplyMatrix,
                          "Integer Multiplication");
+    tests.matrixMultiply(tests.NonSquare1, 4, tests.NonSquare2, 5,
+                         tests.NonSquareMul,
+                         "Non Square Multiplication");
 
     /// Transforms
 
