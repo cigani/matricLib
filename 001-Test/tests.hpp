@@ -52,10 +52,15 @@ public:
                          1, 1, 9, 3,
                          1, 1, 2, 3,
                          8, 1, 2, 7};
-    std::vector<int> realRot{8, 1, 1, 5,
-                             1, 1, 1, 1,
-                             2, 2, 9, 2,
-                             7, 3, 3, 6};
+    std::vector<int> realRot90pos{8, 1, 1, 5,
+                                  1, 1, 1, 1,
+                                  2, 2, 9, 2,
+                                  7, 3, 3, 6};
+    std::vector<int> realRot90neg{6, 3, 3, 7,
+                                  2, 9, 2, 2,
+                                  1, 1, 1, 1,
+                                  5, 1, 1, 8};
+
     //TODO: Need a CSV reader.
     template<typename T>
     void testAsssertion(std::vector<T> expected, std::vector<T> actual,

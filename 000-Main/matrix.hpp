@@ -86,13 +86,39 @@ public:
         }
     }
 
-
     /// Cross Operations
     void multiply(matrix<T> &mat1, matrix<T> &mat2) {
         matrixVector.assign(_rows * _columns, 0);
         multiply_tiled(mat1, mat2);
     }
 
+    /// Hold the dimensions of the matrix
+    int getRows() { return _rows; }
+
+    int getColumns() { return _columns; }
+
+
+    /// Rotational work
+
+    void rotate(int degree) {
+        if (degree == 90) {
+            rotate90pos();
+        } else if (degree == -90) {
+            rotate90neg();
+        } else {}
+
+//            case 180: rotate180pos(this, _rows, _columns);
+//            case -180: rotate180neg(this, _rows, _columns);
+    }
+
+private:
+    int _rows;
+    int _columns;
+    T *vector;
+    std::vector<T> matrixVector;
+    bool transposedMatrix = false;
+
+    // Tiling Multiplication
     void multiply_tiled(matrix<T> &mat1, matrix<T> &mat2) {
         long long int TILE = llround(mat1._rows / 2);
         int N = (mat1._rows);
@@ -109,36 +135,6 @@ public:
                                 matrixVector[y * _rows + x] +=
                                         mat1(y, z) * mat2(z, x);
     }
-
-    /// Hold the dimensions of the matrix
-    int getRows() { return _rows; }
-
-    int getColumns() { return _columns; }
-
-
-    /// Rotational work
-
-    void rotate(int degree) {
-        switch (degree) {
-            case 90: {
-                rotate90pos();
-            }
-//            case -90: {rotate90neg();}
-            default: {
-                break;
-            }
-//            case 180: rotate180pos(this, _rows, _columns);
-//            case -180: rotate180neg(this, _rows, _columns);
-        }
-    }
-
-private:
-    int _rows;
-    int _columns;
-    T *vector;
-    std::vector<T> matrixVector;
-    bool transposedMatrix = false;
-
     /// Rotation Work
     void rotate90pos() {
         transpose(true);
@@ -152,9 +148,12 @@ private:
 
     void rotate90neg() {
         transpose(true);
-        for (int i = 0; i < _columns; i++) {
-            std::swap(matrixVector[(i)],
-                      matrixVector[(_columns * _rows) - (_columns - 1) + i]);
+        for (int i = 0; i < _rows / 2; ++i) {
+            for (int j = 0; j < _columns; ++j) {
+                std::swap(matrixVector[(i * _rows + j)],
+                          matrixVector[j - _columns * (i - _rows + 1)]);
+//                matrixVector[(_rows*_columns) -(_columns) - (_columns*i)+ j]);
+            }
         }
     }
 };
