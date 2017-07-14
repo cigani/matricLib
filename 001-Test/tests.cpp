@@ -38,16 +38,42 @@ int main() {
     tests.matrixMultiply(tests.non_transposedMatrix, 4,
                          tests.non_transposedMatrix, 4, tests.multiplyMatrix,
                          "Integer Multiplication");
+
+    /// Transforms
+
+    tests.matrixRotate(tests.rot, tests.realRot90pos, 4, 4, "90+ Rotation",
+                       90);
+    tests.matrixRotate(tests.rot, tests.realRot90neg, 4, 4, "90- Rotation",
+                       -90);
+
+
+
     /// Error Logging
     tests.iterateVectors(tests.mErrors);
 
 
-
     // Timing
     tests.timing();
-    csvReader<int> csvr("test.csv");
-    csvr.print();
     return 0;
+}
+
+template<typename T>
+void
+tests::matrixRotate(std::vector<T> &test_vector1, std::vector<T> &expected,
+                    int rows, int columns, std::string name, int value) {
+    clock_t tStart = clock();
+    matrix<int> actual(test_vector1, rows, columns);
+    matrix<int> holder(expected, rows, columns);
+    actual.rotate(value);
+    double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
+    testAsssertion(actual, holder, name, timer);
+//    for (auto i = 0; i < 4; i++) {
+//        std::cout<<std::endl;
+//        for (auto j = 0; j < 4; j++) {
+////            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
+//                     std::cout << actual(i, j) << " = " << holder(i, j) << "\t";
+//        }
+//    }
 }
 
 template<typename T>

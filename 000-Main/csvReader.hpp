@@ -24,6 +24,8 @@ private:
     /// Method to read files called in the constructor.
     void read();
 
+    void read(std::vector<T> &matrix_vector);
+
     /// Number of rows present in the matrix
     int rows;
 
@@ -34,6 +36,8 @@ public:
     /// \brief Constructor to generate the system of equations
     /// \param input - The file name containing equations.
     csvReader(std::string input);
+
+    csvReader(std::string input, std::vector<T> &matrix_vector);
 
     ///Constructor to generate the system of equations
     csvReader();

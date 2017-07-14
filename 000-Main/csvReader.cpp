@@ -24,7 +24,6 @@ csvReader<T>::csvReader() {}
 
 template<typename T>
 csvReader<T>::~csvReader() {};
-
 template<typename T>
 void csvReader<T>::read() {
     rows = 0;
@@ -59,4 +58,31 @@ void csvReader<T>::print() {
     for (auto n: mCSV) {
         std::cout << n << std::endl;
     }
+}
+
+template<typename T>
+csvReader<T>::csvReader(std::string input, std::vector<T> &matrix_vector) {
+    filename = input;
+    read(matrix_vector);
+}
+
+template<typename T>
+void csvReader<T>::read(std::vector<T> &matrix_vector) {
+    rows = 0;
+    columns = 0;
+    std::ifstream fin(filename);
+    assert(fin.is_open());
+    std::string line;
+    while (std::getline(fin, line)) {                       // for each line
+        std::istringstream sString(line);
+        while (sString) {
+            std::string compString;
+            if (!getline(sString, compString, ',')) {
+                break;
+            }
+            matrix_vector.push_back(
+                    std::stod(compString)); // add to the current row
+        }
+    }
+
 }

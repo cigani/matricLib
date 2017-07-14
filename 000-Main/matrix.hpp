@@ -8,43 +8,69 @@
 
 #include <vector>
 #include <iostream>
+#include "csvReader.hpp"
 
 template<typename T>
 class matrix {
 public:
 
 
-    matrix(std::vector<T> &array, int _M, int _N) : rows(_M), columns(_N),
-                                                    vector(array.data()) {}
+    matrix(std::vector<T> &array, int rows, int columns) : _rows(rows),
+                                                           _columns(columns),
+                                                           vector(array.data()) {}
+
     matrix() {}
-    matrix(int _M, int _N) : rows(_M), columns(_N) {
-        matrixVector.reserve(_M * _N);
+
+    matrix(std::string FILE, int rows, int columns) : _rows(rows),
+                                                      _columns(columns) {
+        matrixVector.reserve(_rows * _columns);
+        csvReader<T> csvReader2(FILE, matrixVector);
+
+    }
+
+    matrix(int rows, int columns) : _rows(rows), _columns(columns) {
+        matrixVector.reserve(_rows * _columns);
     };
+
     ~matrix() {}
 
     // Activate transpose
-    void transpose() { transposedMatrix = true; }
+    void transpose(bool copy = false) {
+        (!transposedMatrix) ? (transposedMatrix = true)
+                            : (transposedMatrix = false);
+        if (copy) {
+            for (auto i = 0; i < _rows; i++) {
+                for (auto j = 0; j < _columns; j++) {
+                    matrixVector.push_back(vector[j * (_columns) + i]);
+                }
+            }
+        }
+    }
 
     /// Psuedo-2D arrray from a 1D array
     T operator()(int i, int j) {
         if (!matrixVector.empty()) {
-            return !(i < rows && j <= columns) ? throw std::invalid_argument(
-                    "Operator Matrix () out of bonds") : matrixVector[
-                           i * (columns) + j];
+            return !(i < _rows && j <= _columns)
+                   ? throw std::invalid_argument(
+                            "Operator Matrix () out of bonds")
+                   : matrixVector[i * (_columns) + j];
         } else if (transposedMatrix) {
-            return !(i < rows && j <= columns) ? throw std::invalid_argument(
-                    "Operator Matrix () out of bonds") : vector[j * (rows) +
-                                                                i];
+            return !(i < _rows && j <= _columns)
+                   ? throw std::invalid_argument(
+                            "Operator Matrix () out of bonds")
+                   : vector[j * (_columns) + i];
         } else {
-            return !(i < rows && j <= columns) ? throw std::invalid_argument(
-                    "Operator Matrix () out of bonds") : vector[i * (rows) +
-                                                                j];
+            return !(i < _rows && j <= _columns)
+                   ? throw std::invalid_argument(
+                            "Operator Matrix () out of bonds")
+                   : vector[i * (_columns) + j];
         }
     }
 
+    /// Binary operations
     void add(matrix<T> &mat1, matrix<T> &mat2) {
-        for (int i = 0; i < mat1.columns; i++) {
-            for (int j = 0; j < mat1.rows; j++) {
+        for (int i = 0; i < mat1._columns; i++) {
+            for (int j = 0; j < mat1._rows; j++) {
                 matrixVector.push_back(mat1(i, j) + mat2(i, j));
 
             }
@@ -52,23 +78,50 @@ public:
     };
 
     void subtract(matrix<T> &mat1, matrix<T> &mat2) {
-        for (int i = 0; i < mat1.columns; i++) {
-            for (int j = 0; j < mat1.rows; j++) {
+        for (int i = 0; i < mat1._columns; i++) {
+            for (int j = 0; j < mat1._rows; j++) {
                 matrixVector.push_back(mat1(i, j) - mat2(i, j));
 
             }
         }
     }
 
-
+    /// Cross Operations
     void multiply(matrix<T> &mat1, matrix<T> &mat2) {
-        matrixVector.assign(rows * columns, 0);
+        matrixVector.assign(_rows * _columns, 0);
         multiply_tiled(mat1, mat2);
     }
 
+    /// Hold the dimensions of the matrix
+    int getRows() { return _rows; }
+
+    int getColumns() { return _columns; }
+
+
+    /// Rotational work
+
+    void rotate(int degree) {
+        if (degree == 90) {
+            rotate90pos();
+        } else if (degree == -90) {
+            rotate90neg();
+        } else {}
+
+//            case 180: rotate180pos(this, _rows, _columns);
+//            case -180: rotate180neg(this, _rows, _columns);
+    }
+
+private:
+    int _rows;
+    int _columns;
+    T *vector;
+    std::vector<T> matrixVector;
+    bool transposedMatrix = false;
+
+    // Tiling Multiplication
     void multiply_tiled(matrix<T> &mat1, matrix<T> &mat2) {
-        long long int TILE = llround(mat1.rows / 2);
-        int N = (mat1.rows);
+        long long int TILE = llround(mat1._rows / 2);
+        int N = (mat1._rows);
         /* Use tile by tile  tiles */
         /* Loop over all the tiles, stride by tile size */
         for (int i = 0; i < N; i += TILE)
@@ -77,21 +130,32 @@ public:
                     /* Regular multiply inside the tiles */
                     for (int y = i; y < i + TILE; y++) // rows
                         for (int x = j; x < j + TILE; x++) // columns
-                            for (int z = k; z < k + TILE; z++) // 2nd Rows
-                                matrixVector[y * rows + x] +=
+                            for (int z = k;
+                                 z < k + TILE; z++) // 2nd Rows
+                                matrixVector[y * _rows + x] +=
                                         mat1(y, z) * mat2(z, x);
     }
-    /// Hold the dimensions of the matrix
-    int getRows() { return rows; }
+    /// Rotation Work
+    void rotate90pos() {
+        transpose(true);
+        for (int i = 0; i < _rows; ++i) {
+            for (int j = 0; j < _columns / 2; ++j) {
+                std::swap(matrixVector[(i * _columns) + j],
+                          matrixVector[(i * _columns) + _columns - j - 1]);
+            }
+        }
+    }
 
-    int getColumns() { return columns; }
-
-private:
-    int rows;
-    int columns;
-    T *vector;
-    std::vector<T> matrixVector;
-    bool transposedMatrix = false;
+    void rotate90neg() {
+        transpose(true);
+        for (int i = 0; i < _rows / 2; ++i) {
+            for (int j = 0; j < _columns; ++j) {
+                std::swap(matrixVector[(i * _rows + j)],
+                          matrixVector[j - _columns * (i - _rows + 1)]);
+//                matrixVector[(_rows*_columns) -(_columns) - (_columns*i)+ j]);
+            }
+        }
+    }
 };
 
 

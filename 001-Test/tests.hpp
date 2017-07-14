@@ -48,6 +48,18 @@ public:
                                        202, 228, 254, 280,
                                        314, 356, 398, 440,
                                        426, 484, 542, 600};
+    std::vector<int> rot{5, 1, 2, 6,
+                         1, 1, 9, 3,
+                         1, 1, 2, 3,
+                         8, 1, 2, 7};
+    std::vector<int> realRot90pos{8, 1, 1, 5,
+                                  1, 1, 1, 1,
+                                  2, 2, 9, 2,
+                                  7, 3, 3, 6};
+    std::vector<int> realRot90neg{6, 3, 3, 7,
+                                  2, 9, 2, 2,
+                                  1, 1, 1, 1,
+                                  5, 1, 1, 8};
 
     //TODO: Need a CSV reader.
     template<typename T>
@@ -89,6 +101,12 @@ public:
     void matrixMultiply(std::vector<T> &test_vector1, int tv1Rows,
                         std::vector<T> &test_vector2, int tv2Rows,
                         std::vector<T> &expected, std::string name);
+
+    template<typename T>
+    void
+    matrixRotate(std::vector<T> &test_vector1, std::vector<T> &expected,
+                 int rows,
+                 int columns, std::string name, int value);
 };
 
 
