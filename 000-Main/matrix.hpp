@@ -111,6 +111,9 @@ public:
         if (mat1.getRows() == mat2.getRows() &&
             mat1.getColumns() == mat2.getColumns()) {
             multiply_tiled(mat1, mat2);
+        } else if (mat1.getColumns() != mat2.getRows()) {
+            throw std::invalid_argument(
+                    "Matrix 1 Columns do not match Matrix 2 Rows.");
         } else { ikj(mat1, mat2); }
     }
 
