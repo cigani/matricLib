@@ -169,8 +169,6 @@ private:
                             for (int z = k; z < k + TILE; z++) { // 2nd Rows
                                 matrixVector[y * _rows + x] +=
                                         mat1(y, z) * mat2(z, x);
-                                int matrixvalue1 = mat1(y, z);
-                                int matrixvalue2 = mat2(z, x);
                             }
     }
 

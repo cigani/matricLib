@@ -3,7 +3,6 @@
 //
 
 #include "tests.hpp"
-#include "../000-Main/csvReader.hpp"
 
 int main() {
     /// Tests declare
@@ -20,6 +19,9 @@ int main() {
                     "Addition");
     tests.matrixAdd(tests.NonSquare1, tests.NonSquare1, tests.NonSquarePlus,
                     "Non Square Addition");
+    tests.matrixAdd(tests.nonSquareAdd, tests.nonSquareAdd2,
+                    tests.nonSquareAddAnswer,
+                    "Non square nonmatching addition");
 
     tests.matrixAdd(tests.doubleVector1, tests.doubleVector1,
                     tests.additionVectorDouble, "Double addition");
@@ -101,6 +103,7 @@ tests::matrixMultiply(std::vector<T> &test_vector1,
     double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
     testAsssertion(actual, holder, name, timer);
 }
+
 template<typename T>
 void
 tests::matrixTranpose(std::vector<T> &test_vector,

@@ -79,8 +79,10 @@ public:
                                   2, 9, 2, 2,
                                   1, 1, 1, 1,
                                   5, 1, 1, 8};
+    std::vector<int> nonSquareAdd{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    std::vector<int> nonSquareAdd2{0, 1, 2, 3, 4,};
+    std::vector<int> nonSquareAddAnswer{0, 2, 3, 6, 8, 10, 6, 7, 8, 9, 10};
 
-    //TODO: Need a CSV reader.
     template<typename T>
     void testAsssertion(std::vector<T> expected, std::vector<T> actual,
                         std::string name);
