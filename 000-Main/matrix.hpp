@@ -72,17 +72,35 @@ public:
     void add(matrix<T> &mat1, matrix<T> &mat2) {
         for (int i = 0; i < mat1._columns; i++) {
             for (int j = 0; j < mat1._rows; j++) {
-                matrixVector.push_back(mat1(i, j) + mat2(i, j));
-
+                try {
+                    auto mat1_value = mat1(i, j);
+                    try {
+                        auto mat2_value = mat2(i, j);
+                        matrixVector.push_back(mat1_value + mat2_value);
+                    } catch (std::invalid_argument()) {
+                        matrixVector.push_back(mat1_value + 0);
+                    }
+                } catch (std::invalid_argument()) {
+                    matrixVector.push_back(0 + 0);
+                }
             }
         }
-    };
+    }
 
     void subtract(matrix<T> &mat1, matrix<T> &mat2) {
         for (int i = 0; i < mat1._columns; i++) {
             for (int j = 0; j < mat1._rows; j++) {
-                matrixVector.push_back(mat1(i, j) - mat2(i, j));
-
+                try {
+                    auto mat1_value = mat1(i, j);
+                    try {
+                        auto mat2_value = mat2(i, j);
+                        matrixVector.push_back(mat1_value - mat2_value);
+                    } catch (std::invalid_argument()) {
+                        matrixVector.push_back(mat1_value - 0);
+                    }
+                } catch (std::invalid_argument()) {
+                    matrixVector.push_back(0 - 0);
+                }
             }
         }
     }
@@ -93,7 +111,7 @@ public:
         if (mat1.getRows() == mat2.getRows() &&
             mat1.getColumns() == mat2.getColumns()) {
             multiply_tiled(mat1, mat2);
-    } else { ikj(mat1, mat2); }
+        } else { ikj(mat1, mat2); }
     }
 
     /// Hold the dimensions of the matrix
@@ -132,6 +150,7 @@ private:
             }
         }
     }
+
     // Tiling Multiplication
     void multiply_tiled(matrix<T> &mat1, matrix<T> &mat2) {
         long long int TILE = llround(mat1._rows / 2);
@@ -151,6 +170,7 @@ private:
                                 int matrixvalue2 = mat2(z, x);
                             }
     }
+
     /// Rotation Work
     void rotate90pos() {
         transpose(true);
