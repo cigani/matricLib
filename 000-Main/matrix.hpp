@@ -111,6 +111,20 @@ public:
 //            case -180: rotate180neg(this, _rows, _columns);
     }
 
+    void triangle_off_diagonal(std::string kind) {
+        if (_rows = !_columns) {
+            throw std::invalid_argument(
+                    "Needs a Square Matrix");
+        }
+        if (kind == "upper" || "Upper" || "u" || "U") {
+            uppertriangle_off_diagonal();
+
+        }
+        if (kind == "lower" || "Lower" || "l" || "L") {
+            lowertriangle_off_diagonal(this);
+        }
+    }
+
 private:
     int _rows;
     int _columns;
@@ -135,6 +149,7 @@ private:
                                 matrixVector[y * _rows + x] +=
                                         mat1(y, z) * mat2(z, x);
     }
+
     /// Rotation Work
     void rotate90pos() {
         transpose(true);
@@ -155,7 +170,24 @@ private:
 //                matrixVector[(_rows*_columns) -(_columns) - (_columns*i)+ j]);
             }
         }
+        12
     }
+
+    void uppertriangle_off_diagonal() {
+
+    }
+
+    void lowertriangle_off_diagonal(matrix<T> *matrix1) {
+        for (int row = 1; row < _rows; ++row) {
+            for (int col = 0; col < row; ++col) {
+                matrixVector.push_back(vector[row * _rows + col]);
+            }
+        }
+    }
+
+
+
+
 };
 
 

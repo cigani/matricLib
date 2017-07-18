@@ -51,7 +51,16 @@ int main() {
     /// Error Logging
     tests.iterateVectors(tests.mErrors);
 
-
+    matrix<int> test(tests.rot, 4, 4);
+    matrix<int> test2(tests.rot, 4, 4);
+    test2.triangle_off_diagonal("l");
+    for (auto i = 0; i < 4; i++) {
+        std::cout << std::endl;
+        for (auto j = 0; j < 4; j++) {
+            std::cout << "I: " << i << "\t" << "J: " << j << "\t";
+            std::cout << test2(i, j) << "\t";
+        }
+    }
     // Timing
     tests.timing();
     return 0;
