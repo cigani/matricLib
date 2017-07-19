@@ -46,26 +46,29 @@ int main() {
     tests.matrixRotate(tests.rot, tests.realRot90neg, 4, 4, "90- Rotation",
                        -90);
 
-
+    /// Diagonalization
+    tests.matrixOffDiagonal(tests.lower_off1, tests.lower_off1_input, 4, "l",
+                            "Lower");
 
     /// Error Logging
     tests.iterateVectors(tests.mErrors);
 
-    matrix<int> test(tests.rot, 4, 4);
-    matrix<int> test2(tests.rot, 4, 4);
-    test2.triangle_off_diagonal("l");
-    for (auto i = 0; i < 4; i++) {
-        std::cout << std::endl;
-        for (auto j = 0; j < 4; j++) {
-            std::cout << "I: " << i << "\t" << "J: " << j << "\t";
-            std::cout << test2(i, j) << "\t";
-        }
-    }
     // Timing
     tests.timing();
     return 0;
 }
 
+template<typename T>
+void tests::matrixOffDiagonal(std::vector<T> &test_vector1,
+                              std::vector<T> &expected, int rows,
+                              std::string kind, std::string name) {
+    clock_t tStart = clock();
+    matrix<int> actual(test_vector1, rows, rows);
+    matrix<int> holder(expected, rows, rows);
+    actual.triangle_off_diagonal(kind);
+    double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
+    testAsssertion(actual, holder, name, timer);
+}
 template<typename T>
 void
 tests::matrixRotate(std::vector<T> &test_vector1, std::vector<T> &expected,

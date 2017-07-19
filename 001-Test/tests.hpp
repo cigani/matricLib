@@ -60,8 +60,15 @@ public:
                                   2, 9, 2, 2,
                                   1, 1, 1, 1,
                                   5, 1, 1, 8};
+    std::vector<int> lower_off1_input{5, 1, 2, 6,
+                                      1, 1, 9, 3,
+                                      1, 1, 2, 3,
+                                      8, 1, 2, 7};
+    std::vector<int> lower_off1{0, 0, 0, 0,
+                                1, 0, 0, 0,
+                                1, 1, 0, 0,
+                                8, 1, 2, 0};
 
-    //TODO: Need a CSV reader.
     template<typename T>
     void testAsssertion(std::vector<T> expected, std::vector<T> actual,
                         std::string name);
@@ -107,6 +114,11 @@ public:
     matrixRotate(std::vector<T> &test_vector1, std::vector<T> &expected,
                  int rows,
                  int columns, std::string name, int value);
+
+    template<typename T>
+    void
+    matrixOffDiagonal(std::vector<T> &test_vector1, std::vector<T> &expected,
+                      int rows, std::string kind, std::string name);
 };
 
 

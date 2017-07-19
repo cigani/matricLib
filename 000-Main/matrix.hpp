@@ -112,16 +112,16 @@ public:
     }
 
     void triangle_off_diagonal(std::string kind) {
-        if (_rows = !_columns) {
+        if (_rows != _columns) {
             throw std::invalid_argument(
                     "Needs a Square Matrix");
+        }
+        if (kind == "lower" || "Lower" || "l" || "L") {
+            lowertriangle_off_diagonal(this);
         }
         if (kind == "upper" || "Upper" || "u" || "U") {
             uppertriangle_off_diagonal();
 
-        }
-        if (kind == "lower" || "Lower" || "l" || "L") {
-            lowertriangle_off_diagonal(this);
         }
     }
 
@@ -170,7 +170,6 @@ private:
 //                matrixVector[(_rows*_columns) -(_columns) - (_columns*i)+ j]);
             }
         }
-        12
     }
 
     void uppertriangle_off_diagonal() {
@@ -178,9 +177,10 @@ private:
     }
 
     void lowertriangle_off_diagonal(matrix<T> *matrix1) {
+        matrixVector.assign(_rows * _columns, 0);
         for (int row = 1; row < _rows; ++row) {
             for (int col = 0; col < row; ++col) {
-                matrixVector.push_back(vector[row * _rows + col]);
+                matrixVector[row * _rows + col] = vector[row * _rows + col];
             }
         }
     }
