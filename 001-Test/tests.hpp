@@ -79,9 +79,28 @@ public:
                                   2, 9, 2, 2,
                                   1, 1, 1, 1,
                                   5, 1, 1, 8};
+
+    std::vector<int> lower_off1_input{5, 1, 2, 6,
+                                      1, 1, 9, 3,
+                                      1, 1, 2, 3,
+                                      8, 1, 2, 7};
+    std::vector<int> lower_off1{0, 0, 0, 0,
+                                1, 0, 0, 0,
+                                1, 1, 0, 0,
+                                8, 1, 2, 0};
+    std::vector<int> upper_off1_input{5, 1, 2, 6,
+                                      1, 1, 9, 3,
+                                      1, 1, 2, 3,
+                                      8, 1, 2, 7};
+    std::vector<int> upper_off1{0, 1, 2, 6,
+                                0, 0, 9, 3,
+                                0, 0, 0, 3,
+                                0, 0, 0, 0};
+
     std::vector<int> nonSquareAdd{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     std::vector<int> nonSquareAdd2{0, 1, 2, 3, 4,};
     std::vector<int> nonSquareAddAnswer{0, 2, 3, 6, 8, 10, 6, 7, 8, 9, 10};
+
 
     template<typename T>
     void testAsssertion(std::vector<T> expected, std::vector<T> actual,
@@ -90,9 +109,6 @@ public:
     void iterateVectors(std::vector<std::string> &returns);
 
     void testErrorCode(std::string &ErrorType);
-//    std::vector<double> doubleVector1, doubleVector2, doubleVector3, doubleVector4;
-//    std::vector<int> intVector1, intVector2, intVector3, intVector4;
-//    std::vector<float> floatVector1, floatVector2, floatVector3, floatVector4;
 
     template<typename T>
     void matrixEqual(std::vector<T> &theVector, std::string a_name);
@@ -128,6 +144,17 @@ public:
     matrixRotate(std::vector<T> &test_vector1, std::vector<T> &expected,
                  int rows,
                  int columns, std::string name, int value);
+
+    template<typename T>
+    void
+    matrixOffDiagonal(std::vector<T> &test_vector1, std::vector<T> &expected,
+                      int rows, std::string kind, std::string name);
+
+    template<typename T>
+    void
+    matrixEqual(matrix<T> &theVector, std::vector<T> &expected, int row,
+                int col,
+                std::string a_name);
 };
 
 
