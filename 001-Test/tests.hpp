@@ -84,9 +84,6 @@ public:
     void iterateVectors(std::vector<std::string> &returns);
 
     void testErrorCode(std::string &ErrorType);
-//    std::vector<double> doubleVector1, doubleVector2, doubleVector3, doubleVector4;
-//    std::vector<int> intVector1, intVector2, intVector3, intVector4;
-//    std::vector<float> floatVector1, floatVector2, floatVector3, floatVector4;
 
     template<typename T>
     void matrixEqual(std::vector<T> &theVector, std::string a_name);
