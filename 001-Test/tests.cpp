@@ -47,7 +47,8 @@ int main() {
                        -90);
 
     /// Diagonalization
-    tests.matrixOffDiagonal(tests.lower_off1, tests.lower_off1_input, 4, "l",
+    tests.matrixOffDiagonal(tests.lower_off1, tests.lower_off1_input, 4,
+                            "lower",
                             "Lower");
 
     /// Error Logging
@@ -67,6 +68,7 @@ void tests::matrixOffDiagonal(std::vector<T> &test_vector1,
     matrix<int> holder(expected, rows, rows);
     actual.triangle_off_diagonal(kind);
     double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
+    matrixEqual(actual, expected, rows, rows, name);
     testAsssertion(actual, holder, name, timer);
 }
 template<typename T>
@@ -174,6 +176,20 @@ void tests::matrixEqual(std::vector<T> &theVector, std::string a_name) {
 }
 
 template<typename T>
+void
+tests::matrixEqual(matrix<T> &theVector, std::vector<T> &expected, int row,
+                   int col, std::string a_name) {
+    std::vector<T> test_vector;
+    for (auto i = 0; i < row; i++) {
+        for (auto j = 0; j < col; j++) {
+//            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
+//                      new_vector(i, j) << std::endl;
+            test_vector.push_back(theVector(i, j));
+        }
+    }
+    testAsssertion(test_vector, expected, a_name);
+}
+template<typename T>
 void tests::testAsssertion(std::vector<T> expected,
                            std::vector<T> actual,
                            std::string name) {
@@ -198,7 +214,7 @@ void tests::testAsssertion(matrix<T> expected,
     for (int i = 0; i < actual.getColumns(); i++) {
         for (int j = 0; j < actual.getRows(); j++) {
             auto evaluate = expected(i, j) - actual(i, j);
-            if (fabs(evaluate > tolerance)) {
+            if (fabs((double) evaluate > tolerance)) {
                 testErrorCode(name);
                 break;
             }

@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <iostream>
+#include <map>
 #include "csvReader.hpp"
 
 template<typename T>
@@ -116,14 +117,42 @@ public:
             throw std::invalid_argument(
                     "Needs a Square Matrix");
         }
-        if (kind == "lower" || "Lower" || "l" || "L") {
-            lowertriangle_off_diagonal(this);
-        }
-        if (kind == "upper" || "Upper" || "u" || "U") {
-            uppertriangle_off_diagonal();
+        enum lower {
+            l1, l2, l3, l4
+        };
+        enum upper {
+            u1, u2, u3, u4
+        };
+        std::map<std::string, lower> _lower;
+        _lower["lower"] = l1;
+        _lower["Lower"] = l2;
+        _lower["l"] = l3;
+        _lower["L"] = l4;
 
+        std::map<std::string, upper> _upper;
+        _upper["upper"] = u1;
+        _upper["Upper"] = u2;
+        _upper["u"] = u3;
+        _upper["U"] = u4;
+
+        for (auto it = _lower.begin(); it != _lower.end(); it++) {
+            if (it->first == kind) {
+                lowertriangle_off_diagonal(this);
+            }
+        }
+        for (auto it = _upper.begin(); it != _upper.end(); it++) {
+            if (it->first == kind) {
+                uppertriangle_off_diagonal(this);
+            }
         }
     }
+//        if (kind == "lower" || "Lower" || "l" || "L") {
+//            lowertriangle_off_diagonal(this);
+//        }
+//        if (kind == "upper" || "Upper" || "u" || "U") {
+//            uppertriangle_off_diagonal(this);
+//
+//        }
 
 private:
     int _rows;
@@ -172,8 +201,13 @@ private:
         }
     }
 
-    void uppertriangle_off_diagonal() {
-
+    void uppertriangle_off_diagonal(matrix<T> *matrix1) {
+        matrixVector.assign(_rows * _columns, 0);
+        for (int row = _rows; row > 0; --row) {
+            for (int col = _columns; col > row; --col) {
+                matrixVector[row * _rows + col] = vector[row * _rows + col];
+            }
+        }
     }
 
     void lowertriangle_off_diagonal(matrix<T> *matrix1) {
@@ -184,8 +218,6 @@ private:
             }
         }
     }
-
-
 
 
 };

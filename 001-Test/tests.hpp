@@ -119,6 +119,12 @@ public:
     void
     matrixOffDiagonal(std::vector<T> &test_vector1, std::vector<T> &expected,
                       int rows, std::string kind, std::string name);
+
+    template<typename T>
+    void
+    matrixEqual(matrix<T> &theVector, std::vector<T> &expected, int row,
+                int col,
+                std::string a_name);
 };
 
 
