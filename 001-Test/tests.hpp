@@ -68,6 +68,14 @@ public:
                                 1, 0, 0, 0,
                                 1, 1, 0, 0,
                                 8, 1, 2, 0};
+    std::vector<int> upper_off1_input{5, 1, 2, 6,
+                                      1, 1, 9, 3,
+                                      1, 1, 2, 3,
+                                      8, 1, 2, 7};
+    std::vector<int> upper_off1{0, 1, 2, 6,
+                                0, 0, 9, 3,
+                                0, 0, 0, 3,
+                                0, 0, 0, 0};
 
     template<typename T>
     void testAsssertion(std::vector<T> expected, std::vector<T> actual,

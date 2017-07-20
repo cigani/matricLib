@@ -203,8 +203,8 @@ private:
 
     void uppertriangle_off_diagonal(matrix<T> *matrix1) {
         matrixVector.assign(_rows * _columns, 0);
-        for (int row = _rows; row > 0; --row) {
-            for (int col = _columns; col > row; --col) {
+        for (int row = 0; row < _rows; ++row) {
+            for (int col = _columns - 1; col > row; --col) {
                 matrixVector[row * _rows + col] = vector[row * _rows + col];
             }
         }

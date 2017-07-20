@@ -50,7 +50,9 @@ int main() {
     tests.matrixOffDiagonal(tests.lower_off1_input, tests.lower_off1, 4,
                             "lower",
                             "Lower");
-
+    tests.matrixOffDiagonal(tests.upper_off1_input, tests.upper_off1, 4,
+                            "upper",
+                            "Upper");
     /// Error Logging
     tests.iterateVectors(tests.mErrors);
 
