@@ -47,7 +47,7 @@ int main() {
                        -90);
 
     /// Diagonalization
-    tests.matrixOffDiagonal(tests.lower_off1, tests.lower_off1_input, 4,
+    tests.matrixOffDiagonal(tests.lower_off1_input, tests.lower_off1, 4,
                             "lower",
                             "Lower");
 
