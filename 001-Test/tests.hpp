@@ -48,6 +48,25 @@ public:
                                        202, 228, 254, 280,
                                        314, 356, 398, 440,
                                        426, 484, 542, 600};
+    std::vector<int> NonSquare1{0, 4, 8, 12, 16,
+                                1, 5, 9, 13, 17,
+                                2, 6, 10, 14, 18,
+                                3, 7, 11, 15, 19
+    };
+    std::vector<int> NonSquare2{0, 1, 2, 3,
+                                4, 5, 6, 7,
+                                8, 9, 10, 11,
+                                12, 13, 14, 15,
+                                16, 17, 18, 19};
+    std::vector<int> NonSquarePlus{
+            0, 8, 16, 24, 32,
+            2, 10, 18, 26, 34,
+            4, 12, 20, 28, 36,
+            6, 14, 22, 30, 38};
+    std::vector<int> NonSquareMul{480, 520, 560, 600,
+                                  520, 565, 610, 655,
+                                  560, 610, 660, 710,
+                                  600, 655, 710, 765};
     std::vector<int> rot{5, 1, 2, 6,
                          1, 1, 9, 3,
                          1, 1, 2, 3,
@@ -60,6 +79,7 @@ public:
                                   2, 9, 2, 2,
                                   1, 1, 1, 1,
                                   5, 1, 1, 8};
+
     std::vector<int> lower_off1_input{5, 1, 2, 6,
                                       1, 1, 9, 3,
                                       1, 1, 2, 3,
@@ -76,6 +96,11 @@ public:
                                 0, 0, 9, 3,
                                 0, 0, 0, 3,
                                 0, 0, 0, 0};
+
+    std::vector<int> nonSquareAdd{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    std::vector<int> nonSquareAdd2{0, 1, 2, 3, 4,};
+    std::vector<int> nonSquareAddAnswer{0, 2, 3, 6, 8, 10, 6, 7, 8, 9, 10};
+
 
     template<typename T>
     void testAsssertion(std::vector<T> expected, std::vector<T> actual,

@@ -46,6 +46,7 @@ public:
                 }
             }
         }
+        std::swap(_rows, _columns);
     }
 
     /// Psuedo-2D arrray from a 1D array
@@ -72,17 +73,35 @@ public:
     void add(matrix<T> &mat1, matrix<T> &mat2) {
         for (int i = 0; i < mat1._columns; i++) {
             for (int j = 0; j < mat1._rows; j++) {
-                matrixVector.push_back(mat1(i, j) + mat2(i, j));
-
+                try {
+                    auto mat1_value = mat1(i, j);
+                    try {
+                        auto mat2_value = mat2(i, j);
+                        matrixVector.push_back(mat1_value + mat2_value);
+                    } catch (std::invalid_argument()) {
+                        matrixVector.push_back(mat1_value + 0);
+                    }
+                } catch (std::invalid_argument()) {
+                    matrixVector.push_back(0 + 0);
+                }
             }
         }
-    };
+    }
 
     void subtract(matrix<T> &mat1, matrix<T> &mat2) {
         for (int i = 0; i < mat1._columns; i++) {
             for (int j = 0; j < mat1._rows; j++) {
-                matrixVector.push_back(mat1(i, j) - mat2(i, j));
-
+                try {
+                    auto mat1_value = mat1(i, j);
+                    try {
+                        auto mat2_value = mat2(i, j);
+                        matrixVector.push_back(mat1_value - mat2_value);
+                    } catch (std::invalid_argument()) {
+                        matrixVector.push_back(mat1_value - 0);
+                    }
+                } catch (std::invalid_argument()) {
+                    matrixVector.push_back(0 - 0);
+                }
             }
         }
     }
@@ -90,7 +109,13 @@ public:
     /// Cross Operations
     void multiply(matrix<T> &mat1, matrix<T> &mat2) {
         matrixVector.assign(_rows * _columns, 0);
-        multiply_tiled(mat1, mat2);
+        if (mat1.getRows() == mat2.getRows() &&
+            mat1.getColumns() == mat2.getColumns()) {
+            multiply_tiled(mat1, mat2);
+        } else if (mat1.getColumns() != mat2.getRows()) {
+            throw std::invalid_argument(
+                    "Matrix 1 Columns do not match Matrix 2 Rows.");
+        } else { ikj(mat1, mat2); }
     }
 
     /// Hold the dimensions of the matrix
@@ -161,6 +186,17 @@ private:
     std::vector<T> matrixVector;
     bool transposedMatrix = false;
 
+    // Naive Multiplication
+    void ikj(matrix<T> &mat1, matrix<T> &mat2) {
+        for (int i = 0; i < mat1.getRows(); ++i) {
+            for (int k = 0; k < mat2.getColumns(); ++k) {
+                for (int j = 0; j < mat2.getRows(); ++j) {
+                    matrixVector[i * _rows + k] += mat1(i, j) * mat2(j, k);
+                }
+            }
+        }
+    }
+
     // Tiling Multiplication
     void multiply_tiled(matrix<T> &mat1, matrix<T> &mat2) {
         long long int TILE = llround(mat1._rows / 2);
@@ -173,10 +209,10 @@ private:
                     /* Regular multiply inside the tiles */
                     for (int y = i; y < i + TILE; y++) // rows
                         for (int x = j; x < j + TILE; x++) // columns
-                            for (int z = k;
-                                 z < k + TILE; z++) // 2nd Rows
+                            for (int z = k; z < k + TILE; z++) { // 2nd Rows
                                 matrixVector[y * _rows + x] +=
                                         mat1(y, z) * mat2(z, x);
+                            }
     }
 
     /// Rotation Work
