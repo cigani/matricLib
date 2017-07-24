@@ -49,59 +49,57 @@ public:
         std::swap(_rows, _columns);
     }
 
+    void pad(bool copy = false) {
+        (!paddedMatrix) ? (paddedMatrix = true)
+                        : (paddedMatrix = false);
+        if (copy) {
+            for (auto i = 0; i < _rows; i++) {
+                for (auto j = 0; j < _columns; j++) {
+                    matrixVector.push_back(vector[j * (_columns) + i]);
+                }
+            }
+        }
+    };
+
     /// Psuedo-2D arrray from a 1D array
     T operator()(int i, int j) {
         if (!matrixVector.empty()) {
-            return !(i < _rows && j <= _columns)
-                   ? throw std::invalid_argument(
-                            "Operator Matrix () out of bonds")
-                   : matrixVector[i * (_columns) + j];
+            return operation_helper(i, j);
         } else if (transposedMatrix) {
-            return !(i < _rows && j <= _columns)
-                   ? throw std::invalid_argument(
-                            "Operator Matrix () out of bonds")
-                   : vector[j * (_columns) + i];
+            return operation_helper(j, i);
         } else {
-            return !(i < _rows && j <= _columns)
-                   ? throw std::invalid_argument(
-                            "Operator Matrix () out of bonds")
-                   : vector[i * (_columns) + j];
+            return operation_helper(i, j);
         }
     }
 
+
     /// Binary operations
     void add(matrix<T> &mat1, matrix<T> &mat2) {
-        for (int i = 0; i < mat1._columns; i++) {
-            for (int j = 0; j < mat1._rows; j++) {
-                try {
-                    auto mat1_value = mat1(i, j);
-                    try {
-                        auto mat2_value = mat2(i, j);
-                        matrixVector.push_back(mat1_value + mat2_value);
-                    } catch (std::invalid_argument()) {
-                        matrixVector.push_back(mat1_value + 0);
-                    }
-                } catch (std::invalid_argument()) {
-                    matrixVector.push_back(0 + 0);
-                }
+        int n, m;
+        n = std::max(mat1._rows, mat2._rows);
+        m = std::max(mat1._columns, mat2._columns);
+        if (mat1._rows * mat1._columns != mat2._rows * mat2._rows) {
+            mat1.pad();
+            mat2.pad();
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                matrixVector.push_back(mat1(i, j) + mat2(i, j));
             }
         }
     }
 
     void subtract(matrix<T> &mat1, matrix<T> &mat2) {
-        for (int i = 0; i < mat1._columns; i++) {
-            for (int j = 0; j < mat1._rows; j++) {
-                try {
-                    auto mat1_value = mat1(i, j);
-                    try {
-                        auto mat2_value = mat2(i, j);
-                        matrixVector.push_back(mat1_value - mat2_value);
-                    } catch (std::invalid_argument()) {
-                        matrixVector.push_back(mat1_value - 0);
-                    }
-                } catch (std::invalid_argument()) {
-                    matrixVector.push_back(0 - 0);
-                }
+        int n, m;
+        n = std::max(mat1._rows, mat2._rows);
+        m = std::max(mat1._columns, mat2._columns);
+        if (mat1._rows * mat1._columns != mat2._rows * mat2._rows) {
+            mat1.pad();
+            mat2.pad();
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                matrixVector.push_back(mat1(i, j) - mat2(i, j));
             }
         }
     }
@@ -185,6 +183,7 @@ private:
     T *vector;
     std::vector<T> matrixVector;
     bool transposedMatrix = false;
+    bool paddedMatrix = false;
 
     // Naive Multiplication
     void ikj(matrix<T> &mat1, matrix<T> &mat2) {
@@ -251,6 +250,40 @@ private:
         for (int row = 1; row < _rows; ++row) {
             for (int col = 0; col < row; ++col) {
                 matrixVector[row * _rows + col] = vector[row * _rows + col];
+            }
+        }
+    }
+
+    T operation_helper(int i, int j) const {
+        if (!matrixVector.empty()) {
+            if (paddedMatrix) {
+                return (i > _rows - 1 || j > _columns - 1 ||
+                        i * _columns + j > _rows *
+                                           _columns - 1)
+                       ? 0
+                       : matrixVector[i * (_columns) + j];
+            } else {
+                return (i > _rows - 1 || j > _columns - 1 ||
+                        i * _columns + j > _rows *
+                                           _columns - 1)
+                       ? throw std::invalid_argument(
+                                "Operator Matrix () out of bonds")
+                       : matrixVector[i * (_columns) + j];
+            }
+        } else {
+            if (paddedMatrix) {
+                return (i > _rows - 1 || j > _columns - 1 ||
+                        i * _columns + j > _rows *
+                                           _columns - 1)
+                       ? 0
+                       : vector[i * (_columns) + j];
+            } else {
+                return (i > _rows - 1 || j > _columns - 1 ||
+                        i * _columns + j > _rows *
+                                           _columns - 1)
+                       ? throw std::invalid_argument(
+                                "Operator Matrix () out of bonds")
+                       : vector[i * (_columns) + j];
             }
         }
     }

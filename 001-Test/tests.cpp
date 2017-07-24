@@ -19,9 +19,10 @@ int main() {
                     "Addition");
     tests.matrixAdd(tests.NonSquare1, tests.NonSquare1, tests.NonSquarePlus,
                     "Non Square Addition");
-    tests.matrixAdd(tests.nonSquareAdd, tests.nonSquareAdd2,
-                    tests.nonSquareAddAnswer,
-                    "Non square nonmatching addition");
+    tests.matrixAddNonSquare(tests.nonSquareAdd, 2, 5, tests.nonSquareAdd2, 1,
+                             5,
+                             tests.nonSquareAddAnswer,
+                             "Non square nonmatching addition");
 
     tests.matrixAdd(tests.doubleVector1, tests.doubleVector1,
                     tests.additionVectorDouble, "Double addition");
@@ -61,7 +62,7 @@ int main() {
     tests.matrixOffDiagonal(tests.upper_off1_input, tests.upper_off1, 4,
                             "upper",
                             "Upper");
-    /// Error Logging
+//  Error Logging
     tests.iterateVectors(tests.mErrors);
 
     // Timing
@@ -173,6 +174,28 @@ tests::matrixAdd(std::vector<T> &test_vector1, std::vector<T> &test_vector2,
 }
 
 template<typename T>
+void
+tests::matrixAddNonSquare(std::vector<T> &test_vector1, int row1, int col1,
+                          std::vector<T> &test_vector2, int row2, int col2,
+                          std::vector<T> &answer_vector, std::string name) {
+    int row3 = std::max(row1, row2);
+    int col3 = std::max(col1, col2);
+    clock_t tStart = clock();
+    matrix<T> vec1(test_vector1, row1, col1);
+    matrix<T> vec2(test_vector2, row2, col2);
+    matrix<T> vec3(row3, col3);
+    matrix<T> vec_answer(answer_vector, row3, col3);
+    vec3.add(vec1, vec2);
+    double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
+//        for (auto i = 0; i < row3; i++) {
+//        for (auto j = 0; j < col3; j++) {
+//            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
+//                      vec_answer(i, j) << " = " << vec3(i, j) << std::endl;
+//        }
+//    }
+    testAsssertion(vec3, vec_answer, name, timer);
+}
+template<typename T>
 void tests::matrixEqual(std::vector<T> &theVector, std::string a_name) {
     matrix<T> new_vector(theVector, 10, 10);
     std::vector<T> test_vector;
@@ -222,8 +245,8 @@ void tests::testAsssertion(matrix<T> expected,
                            double timer) {
     mTimingName.push_back(name);
     mTiming.push_back(timer);
-    for (int i = 0; i < actual.getColumns(); i++) {
-        for (int j = 0; j < actual.getRows(); j++) {
+    for (int i = 0; i < actual.getRows(); i++) {
+        for (int j = 0; j < actual.getColumns(); j++) {
             auto evaluate = expected(i, j) - actual(i, j);
             if (fabs((double) evaluate > tolerance)) {
                 testErrorCode(name);
