@@ -92,13 +92,14 @@ tests::matrixRotate(std::vector<T> &test_vector1, std::vector<T> &expected,
     actual.rotate(value);
     double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
     testAsssertion(actual, holder, name, timer);
-//    for (auto i = 0; i < 4; i++) {
-//        std::cout<<std::endl;
-//        for (auto j = 0; j < 4; j++) {
-////            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
-//                     std::cout << actual(i, j) << " = " << holder(i, j) << "\t";
-//        }
-//    }
+    for (auto i = 0; i < 4; i++) {
+        std::cout << std::endl;
+        for (auto j = 0; j < 4; j++) {
+//            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
+            std::cout << actual(i, j) << " = " << holder(i, j) << "\t";
+        }
+    }
+    std::cout << "\n" << "ABOVE: " << name << std::endl;
 }
 
 template<typename T>

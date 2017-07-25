@@ -26,11 +26,13 @@ public:
                                                       _columns(columns) {
         matrixVector.reserve(_rows * _columns);
         csvReader<T> csvReader2(FILE, matrixVector);
+        vector = matrixVector.data();
 
     }
 
     matrix(int rows, int columns) : _rows(rows), _columns(columns) {
         matrixVector.reserve(_rows * _columns);
+        vector = matrixVector.data();
     };
 
     ~matrix() {}
@@ -45,6 +47,7 @@ public:
                     matrixVector.push_back(vector[j * (_columns) + i]);
                 }
             }
+            vector = matrixVector.data();
         }
         std::swap(_rows, _columns);
     }
@@ -58,21 +61,16 @@ public:
                     matrixVector.push_back(vector[j * (_columns) + i]);
                 }
             }
+            vector = matrixVector.data();
         }
     };
 
     /// Psuedo-2D arrray from a 1D array
     T operator()(int i, int j) {
-        if (!matrixVector.empty()) {
-            if (transposedMatrix) std::swap(i, j);
-            return (paddedMatrix) ? operation_helper(i, j, 1, 1)
-                                  : operation_helper(i, j, 1, 0);
-        } else {
             if (transposedMatrix) std::swap(i, j);
             return (paddedMatrix) ? operation_helper(i, j, 0, 1)
                                   : operation_helper(i, j, 0, 0);
         }
-    }
 
 
     /// Binary operations
@@ -109,6 +107,7 @@ public:
     /// Cross Operations
     void multiply(matrix<T> &mat1, matrix<T> &mat2) {
         matrixVector.assign(_rows * _columns, 0);
+        vector = matrixVector.data();
         if (mat1.getRows() == mat2.getRows() &&
             mat1.getColumns() == mat2.getColumns()) {
             multiply_tiled(mat1, mat2);
@@ -162,12 +161,12 @@ public:
 
         for (auto it = _lower.begin(); it != _lower.end(); it++) {
             if (it->first == kind) {
-                lowertriangle_off_diagonal(this);
+                lowertriangle_off_diagonal();
             }
         }
         for (auto it = _upper.begin(); it != _upper.end(); it++) {
             if (it->first == kind) {
-                uppertriangle_off_diagonal(this);
+                uppertriangle_off_diagonal();
             }
         }
     }
@@ -225,6 +224,7 @@ private:
                           matrixVector[(i * _columns) + _columns - j - 1]);
             }
         }
+
     }
 
     void rotate90neg() {
@@ -238,8 +238,9 @@ private:
         }
     }
 
-    void uppertriangle_off_diagonal(matrix<T> *matrix1) {
+    void uppertriangle_off_diagonal() {
         matrixVector.assign(_rows * _columns, 0);
+        vector = matrixVector.data();
         for (int row = 0; row < _rows; ++row) {
             for (int col = _columns - 1; col > row; --col) {
                 matrixVector[row * _rows + col] = vector[row * _rows + col];
@@ -247,7 +248,7 @@ private:
         }
     }
 
-    void lowertriangle_off_diagonal(matrix<T> *matrix1) {
+    void lowertriangle_off_diagonal() {
         matrixVector.assign(_rows * _columns, 0);
         for (int row = 1; row < _rows; ++row) {
             for (int col = 0; col < row; ++col) {

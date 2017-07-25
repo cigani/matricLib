@@ -38,8 +38,10 @@ public:
     std::vector<double> additionVectorDoubleLarge = valueRange.range(0.,
                                                                      9000000 *
                                                                      2., 2.);
-    std::vector<int> non_transposedMatrix{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-                                          12, 13, 14, 15, 16};
+    std::vector<int> non_transposedMatrix{1, 2, 3, 4,
+                                          5, 6, 7, 8,
+                                          9, 10, 11, 12,
+                                          13, 14, 15, 16};
     std::vector<int> tranposeMatrix = {1, 5, 9, 13,
                                        2, 6, 10, 14,
                                        3, 7, 11, 15,
