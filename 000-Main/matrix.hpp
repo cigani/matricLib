@@ -64,11 +64,13 @@ public:
     /// Psuedo-2D arrray from a 1D array
     T operator()(int i, int j) {
         if (!matrixVector.empty()) {
-            return operation_helper(i, j);
-        } else if (transposedMatrix) {
-            return operation_helper(j, i);
+            if (transposedMatrix) std::swap(i, j);
+            return (paddedMatrix) ? operation_helper(i, j, 1, 1)
+                                  : operation_helper(i, j, 1, 0);
         } else {
-            return operation_helper(i, j);
+            if (transposedMatrix) std::swap(i, j);
+            return (paddedMatrix) ? operation_helper(i, j, 0, 1)
+                                  : operation_helper(i, j, 0, 0);
         }
     }
 
@@ -254,37 +256,45 @@ private:
         }
     }
 
-    T operation_helper(int i, int j) const {
-        if (!matrixVector.empty()) {
-            if (paddedMatrix) {
-                return (i > _rows - 1 || j > _columns - 1 ||
-                        i * _columns + j > _rows *
-                                           _columns - 1)
-                       ? 0
-                       : matrixVector[i * (_columns) + j];
-            } else {
-                return (i > _rows - 1 || j > _columns - 1 ||
-                        i * _columns + j > _rows *
-                                           _columns - 1)
-                       ? throw std::invalid_argument(
-                                "Operator Matrix () out of bonds")
-                       : matrixVector[i * (_columns) + j];
-            }
-        } else {
-            if (paddedMatrix) {
-                return (i > _rows - 1 || j > _columns - 1 ||
-                        i * _columns + j > _rows *
-                                           _columns - 1)
-                       ? 0
-                       : vector[i * (_columns) + j];
-            } else {
+    T operation_helper(int i, int j, bool mVector, bool mPad) const {
+        /**
+         * Cases:
+            byteVector: Filled MatrixVector
+            bytePadding: Padded Vector
+         */
+#define byteVector (1 << 0)
+#define bytePadding (1 << 1)
+        switch ((mVector ? byteVector : 0) | (mPad ? bytePadding : 0)) {
+            case 0:
                 return (i > _rows - 1 || j > _columns - 1 ||
                         i * _columns + j > _rows *
                                            _columns - 1)
                        ? throw std::invalid_argument(
                                 "Operator Matrix () out of bonds")
                        : vector[i * (_columns) + j];
-            }
+
+            case byteVector:
+                return (i > _rows - 1 || j > _columns - 1 ||
+                        i * _columns + j > _rows *
+                                           _columns - 1)
+                       ? throw std::invalid_argument(
+                                "Operator Matrix () out of bonds")
+                       : matrixVector[i * (_columns) + j];
+
+            case bytePadding:
+                return (i > _rows - 1 || j > _columns - 1 ||
+                        i * _columns + j > _rows *
+                                           _columns - 1)
+                       ? 0
+                       : vector[i * (_columns) + j];
+            case byteVector + bytePadding:
+                return (i > _rows - 1 || j > _columns - 1 ||
+                        i * _columns + j > _rows *
+                                           _columns - 1)
+                       ? 0
+                       : matrixVector[i * (_columns) + j];
+            default:
+                break;
         }
     }
 
