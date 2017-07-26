@@ -26,82 +26,80 @@ public:
                                                       _columns(columns) {
         matrixVector.reserve(_rows * _columns);
         csvReader<T> csvReader2(FILE, matrixVector);
+        vector = matrixVector.data();
 
     }
 
     matrix(int rows, int columns) : _rows(rows), _columns(columns) {
         matrixVector.reserve(_rows * _columns);
+        vector = matrixVector.data();
     };
 
     ~matrix() {}
 
     // Activate transpose
     void transpose(bool copy = false) {
-        (!transposedMatrix) ? (transposedMatrix = true)
-                            : (transposedMatrix = false);
+        (transposedMatrix) ? (transposedMatrix = false)
+                           : (transposedMatrix = true);
         if (copy) {
             for (auto i = 0; i < _rows; i++) {
                 for (auto j = 0; j < _columns; j++) {
                     matrixVector.push_back(vector[j * (_columns) + i]);
                 }
             }
+            vector = matrixVector.data();
         }
         std::swap(_rows, _columns);
     }
 
+    void pad(bool copy = false) {
+        (!paddedMatrix) ? (paddedMatrix = true)
+                        : (paddedMatrix = false);
+        if (copy) {
+            for (auto i = 0; i < _rows; i++) {
+                for (auto j = 0; j < _columns; j++) {
+                    matrixVector.push_back(vector[j * (_columns) + i]);
+                }
+            }
+            vector = matrixVector.data();
+        }
+    };
+
     /// Psuedo-2D arrray from a 1D array
     T operator()(int i, int j) {
-        if (!matrixVector.empty()) {
-            return !(i < _rows && j <= _columns)
-                   ? throw std::invalid_argument(
-                            "Operator Matrix () out of bonds")
-                   : matrixVector[i * (_columns) + j];
-        } else if (transposedMatrix) {
-            return !(i < _rows && j <= _columns)
-                   ? throw std::invalid_argument(
-                            "Operator Matrix () out of bonds")
-                   : vector[j * (_columns) + i];
-        } else {
-            return !(i < _rows && j <= _columns)
-                   ? throw std::invalid_argument(
-                            "Operator Matrix () out of bonds")
-                   : vector[i * (_columns) + j];
+            if (transposedMatrix) std::swap(i, j);
+            return (paddedMatrix) ? operation_helper(i, j, 0, 1)
+                                  : operation_helper(i, j, 0, 0);
         }
-    }
+
 
     /// Binary operations
     void add(matrix<T> &mat1, matrix<T> &mat2) {
-        for (int i = 0; i < mat1._columns; i++) {
-            for (int j = 0; j < mat1._rows; j++) {
-                try {
-                    auto mat1_value = mat1(i, j);
-                    try {
-                        auto mat2_value = mat2(i, j);
-                        matrixVector.push_back(mat1_value + mat2_value);
-                    } catch (std::invalid_argument()) {
-                        matrixVector.push_back(mat1_value + 0);
-                    }
-                } catch (std::invalid_argument()) {
-                    matrixVector.push_back(0 + 0);
-                }
+        int n, m;
+        n = std::max(mat1._rows, mat2._rows);
+        m = std::max(mat1._columns, mat2._columns);
+        if (mat1._rows * mat1._columns != mat2._rows * mat2._rows) {
+            mat1.pad();
+            mat2.pad();
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                matrixVector.push_back(mat1(i, j) + mat2(i, j));
             }
         }
     }
 
     void subtract(matrix<T> &mat1, matrix<T> &mat2) {
-        for (int i = 0; i < mat1._columns; i++) {
-            for (int j = 0; j < mat1._rows; j++) {
-                try {
-                    auto mat1_value = mat1(i, j);
-                    try {
-                        auto mat2_value = mat2(i, j);
-                        matrixVector.push_back(mat1_value - mat2_value);
-                    } catch (std::invalid_argument()) {
-                        matrixVector.push_back(mat1_value - 0);
-                    }
-                } catch (std::invalid_argument()) {
-                    matrixVector.push_back(0 - 0);
-                }
+        int n, m;
+        n = std::max(mat1._rows, mat2._rows);
+        m = std::max(mat1._columns, mat2._columns);
+        if (mat1._rows * mat1._columns != mat2._rows * mat2._rows) {
+            mat1.pad();
+            mat2.pad();
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                matrixVector.push_back(mat1(i, j) - mat2(i, j));
             }
         }
     }
@@ -109,6 +107,7 @@ public:
     /// Cross Operations
     void multiply(matrix<T> &mat1, matrix<T> &mat2) {
         matrixVector.assign(_rows * _columns, 0);
+        vector = matrixVector.data();
         if (mat1.getRows() == mat2.getRows() &&
             mat1.getColumns() == mat2.getColumns()) {
             multiply_tiled(mat1, mat2);
@@ -129,9 +128,12 @@ public:
     void rotate(int degree) {
         if (degree == 90) {
             rotate90pos();
+            this->transpose();
         } else if (degree == -90) {
             rotate90neg();
+            this->transpose();
         } else {}
+
 
 //            case 180: rotate180pos(this, _rows, _columns);
 //            case -180: rotate180neg(this, _rows, _columns);
@@ -162,12 +164,14 @@ public:
 
         for (auto it = _lower.begin(); it != _lower.end(); it++) {
             if (it->first == kind) {
-                lowertriangle_off_diagonal(this);
+                lowertriangle_off_diagonal();
+                vector = matrixVector.data();
             }
         }
         for (auto it = _upper.begin(); it != _upper.end(); it++) {
             if (it->first == kind) {
-                uppertriangle_off_diagonal(this);
+                uppertriangle_off_diagonal();
+                vector = matrixVector.data();
             }
         }
     }
@@ -185,6 +189,7 @@ private:
     T *vector;
     std::vector<T> matrixVector;
     bool transposedMatrix = false;
+    bool paddedMatrix = false;
 
     // Naive Multiplication
     void ikj(matrix<T> &mat1, matrix<T> &mat2) {
@@ -224,6 +229,7 @@ private:
                           matrixVector[(i * _columns) + _columns - j - 1]);
             }
         }
+
     }
 
     void rotate90neg() {
@@ -237,7 +243,7 @@ private:
         }
     }
 
-    void uppertriangle_off_diagonal(matrix<T> *matrix1) {
+    void uppertriangle_off_diagonal() {
         matrixVector.assign(_rows * _columns, 0);
         for (int row = 0; row < _rows; ++row) {
             for (int col = _columns - 1; col > row; --col) {
@@ -246,12 +252,54 @@ private:
         }
     }
 
-    void lowertriangle_off_diagonal(matrix<T> *matrix1) {
+    void lowertriangle_off_diagonal() {
         matrixVector.assign(_rows * _columns, 0);
         for (int row = 1; row < _rows; ++row) {
             for (int col = 0; col < row; ++col) {
                 matrixVector[row * _rows + col] = vector[row * _rows + col];
             }
+        }
+    }
+
+    T operation_helper(int i, int j, bool mVector, bool mPad) const {
+        /**
+         * Cases:
+            byteVector: Filled MatrixVector
+            bytePadding: Padded Vector
+         */
+#define byteVector (1 << 0)
+#define bytePadding (1 << 1)
+        switch ((mVector ? byteVector : 0) | (mPad ? bytePadding : 0)) {
+            case 0:
+                return (i > _rows - 1 || j > _columns - 1 ||
+                        i * _columns + j > _rows *
+                                           _columns - 1)
+                       ? throw std::invalid_argument(
+                                "Operator Matrix () out of bonds")
+                       : vector[i * (_columns) + j];
+
+            case byteVector:
+                return (i > _rows - 1 || j > _columns - 1 ||
+                        i * _columns + j > _rows *
+                                           _columns - 1)
+                       ? throw std::invalid_argument(
+                                "Operator Matrix () out of bonds")
+                       : matrixVector[i * (_columns) + j];
+
+            case bytePadding:
+                return (i > _rows - 1 || j > _columns - 1 ||
+                        i * _columns + j > _rows *
+                                           _columns - 1)
+                       ? 0
+                       : vector[i * (_columns) + j];
+            case byteVector + bytePadding:
+                return (i > _rows - 1 || j > _columns - 1 ||
+                        i * _columns + j > _rows *
+                                           _columns - 1)
+                       ? 0
+                       : matrixVector[i * (_columns) + j];
+            default:
+                break;
         }
     }
 

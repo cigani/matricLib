@@ -38,8 +38,10 @@ public:
     std::vector<double> additionVectorDoubleLarge = valueRange.range(0.,
                                                                      9000000 *
                                                                      2., 2.);
-    std::vector<int> non_transposedMatrix{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-                                          12, 13, 14, 15, 16};
+    std::vector<int> non_transposedMatrix{1, 2, 3, 4,
+                                          5, 6, 7, 8,
+                                          9, 10, 11, 12,
+                                          13, 14, 15, 16};
     std::vector<int> tranposeMatrix = {1, 5, 9, 13,
                                        2, 6, 10, 14,
                                        3, 7, 11, 15,
@@ -98,8 +100,8 @@ public:
                                 0, 0, 0, 0};
 
     std::vector<int> nonSquareAdd{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    std::vector<int> nonSquareAdd2{0, 1, 2, 3, 4,};
-    std::vector<int> nonSquareAddAnswer{0, 2, 3, 6, 8, 10, 6, 7, 8, 9, 10};
+    std::vector<int> nonSquareAdd2{0, 1, 2, 3, 4};
+    std::vector<int> nonSquareAddAnswer{0, 2, 4, 6, 8, 10, 6, 7, 8, 9, 10};
 
 
     template<typename T>
@@ -155,6 +157,11 @@ public:
     matrixEqual(matrix<T> &theVector, std::vector<T> &expected, int row,
                 int col,
                 std::string a_name);
+
+    template<typename T>
+    void matrixAddNonSquare(std::vector<T> &test_vector1, int row1, int col1,
+                            std::vector<T> &test_vector2, int row2, int col2,
+                            std::vector<T> &answer_vector, std::string name);
 };
 
 
