@@ -133,10 +133,6 @@ public:
             rotate90neg();
             this->transpose();
         } else {}
-
-
-//            case 180: rotate180pos(this, _rows, _columns);
-//            case -180: rotate180neg(this, _rows, _columns);
     }
 
     void triangle_off_diagonal(std::string kind) {
@@ -175,13 +171,6 @@ public:
             }
         }
     }
-//        if (kind == "lower" || "Lower" || "l" || "L") {
-//            lowertriangle_off_diagonal(this);
-//        }
-//        if (kind == "upper" || "Upper" || "u" || "U") {
-//            uppertriangle_off_diagonal(this);
-//
-//        }
 
 private:
     int _rows;
