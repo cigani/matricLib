@@ -10,7 +10,8 @@
 #include <iostream>
 #include <map>
 #include "csvReader.hpp"
-#include "mAddition.h"
+#include "mAddition.hpp"
+#include "mAddition.cpp"
 
 template<typename T>
 class matrix {
