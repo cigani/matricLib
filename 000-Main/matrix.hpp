@@ -39,8 +39,8 @@ public:
 
     // Activate transpose
     void transpose(bool copy = false) {
-        (!transposedMatrix) ? (transposedMatrix = true)
-                            : (transposedMatrix = false);
+        (transposedMatrix) ? (transposedMatrix = false)
+                           : (transposedMatrix = true);
         if (copy) {
             for (auto i = 0; i < _rows; i++) {
                 for (auto j = 0; j < _columns; j++) {
@@ -128,9 +128,12 @@ public:
     void rotate(int degree) {
         if (degree == 90) {
             rotate90pos();
+            this->transpose();
         } else if (degree == -90) {
             rotate90neg();
+            this->transpose();
         } else {}
+
 
 //            case 180: rotate180pos(this, _rows, _columns);
 //            case -180: rotate180neg(this, _rows, _columns);
@@ -162,11 +165,13 @@ public:
         for (auto it = _lower.begin(); it != _lower.end(); it++) {
             if (it->first == kind) {
                 lowertriangle_off_diagonal();
+                vector = matrixVector.data();
             }
         }
         for (auto it = _upper.begin(); it != _upper.end(); it++) {
             if (it->first == kind) {
                 uppertriangle_off_diagonal();
+                vector = matrixVector.data();
             }
         }
     }
@@ -240,7 +245,6 @@ private:
 
     void uppertriangle_off_diagonal() {
         matrixVector.assign(_rows * _columns, 0);
-        vector = matrixVector.data();
         for (int row = 0; row < _rows; ++row) {
             for (int col = _columns - 1; col > row; --col) {
                 matrixVector[row * _rows + col] = vector[row * _rows + col];
