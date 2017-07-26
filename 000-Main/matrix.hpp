@@ -97,20 +97,11 @@ public:
 //    }
 
     void subtract(matrix<T> &mat1, matrix<T> &mat2) {
-        int n, m;
-        n = std::max(mat1._rows, mat2._rows);
-        m = std::max(mat1._columns, mat2._columns);
-        if (mat1._rows * mat1._columns != mat2._rows * mat2._rows) {
-            mat1.pad();
-            mat2.pad();
-        }
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                matrixVector.push_back(mat1(i, j) - mat2(i, j));
-            }
-        }
+        int rank1 = mat1.getRank();
+        int rank2 = mat2.getRank();
+        addition.subtract(mat1.vector, mat2.vector, rank1, rank2,
+                          matrixVector);
     }
-
     /// Cross Operations
     void multiply(matrix<T> &mat1, matrix<T> &mat2) {
         matrixVector.assign(_rows * _columns, 0);
