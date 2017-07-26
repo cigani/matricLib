@@ -100,6 +100,7 @@ public:
         } else { ikj(mat1, mat2); }
     }
 
+
     /// Hold the dimensions of the matrix
     int getRows() { return _rows; }
 
