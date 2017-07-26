@@ -10,8 +10,8 @@
 #include <iostream>
 #include <map>
 #include "csvReader.hpp"
-#include "mAddition.hpp"
-#include "mAddition.cpp"
+#include "binaryOP.hpp"
+#include "binaryOP.cpp"
 
 template<typename T>
 class matrix {
@@ -79,27 +79,12 @@ public:
     void add(matrix<T> &mat1, matrix<T> &mat2) {
         int rank1 = mat1.getRank();
         int rank2 = mat2.getRank();
-        addition.add(mat1.vector, mat2.vector, rank1, rank2, matrixVector);
+        binaryOP.add(mat1.vector, mat2.vector, rank1, rank2, matrixVector);
     }
-//    void add(matrix<T> &mat1, matrix<T> &mat2) {
-//        int n, m;
-//        n = std::max(mat1._rows, mat2._rows);
-//        m = std::max(mat1._columns, mat2._columns);
-//        if (mat1._rows * mat1._columns != mat2._rows * mat2._rows) {
-//            mat1.pad();
-//            mat2.pad();
-//        }
-//        for (int i = 0; i < n; i++) {
-//            for (int j = 0; j < m; j++) {
-//                matrixVector.push_back(mat1(i, j) + mat2(i, j));
-//            }
-//        }
-//    }
-
     void subtract(matrix<T> &mat1, matrix<T> &mat2) {
         int rank1 = mat1.getRank();
         int rank2 = mat2.getRank();
-        addition.subtract(mat1.vector, mat2.vector, rank1, rank2,
+        binaryOP.subtract(mat1.vector, mat2.vector, rank1, rank2,
                           matrixVector);
     }
     /// Cross Operations
@@ -178,7 +163,7 @@ private:
     std::vector<T> matrixVector;
     bool transposedMatrix = false;
     bool paddedMatrix = false;
-    mAddition addition;
+    binaryOP binaryOP;
 
     // Naive Multiplication
     void ikj(matrix<T> &mat1, matrix<T> &mat2) {
