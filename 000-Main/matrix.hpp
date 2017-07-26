@@ -10,6 +10,7 @@
 #include <iostream>
 #include <map>
 #include "csvReader.hpp"
+#include "mAddition.h"
 
 template<typename T>
 class matrix {
@@ -37,7 +38,7 @@ public:
 
     ~matrix() {}
 
-    // Activate transpose
+    /// Activate transpose
     void transpose(bool copy = false) {
         (transposedMatrix) ? (transposedMatrix = false)
                            : (transposedMatrix = true);
@@ -67,27 +68,32 @@ public:
 
     /// Psuedo-2D arrray from a 1D array
     T operator()(int i, int j) {
-            if (transposedMatrix) std::swap(i, j);
-            return (paddedMatrix) ? operation_helper(i, j, 0, 1)
-                                  : operation_helper(i, j, 0, 0);
-        }
+        if (transposedMatrix) std::swap(i, j);
+        return (paddedMatrix) ? operation_helper(i, j, 0, 1)
+                              : operation_helper(i, j, 0, 0);
+    }
 
 
     /// Binary operations
     void add(matrix<T> &mat1, matrix<T> &mat2) {
-        int n, m;
-        n = std::max(mat1._rows, mat2._rows);
-        m = std::max(mat1._columns, mat2._columns);
-        if (mat1._rows * mat1._columns != mat2._rows * mat2._rows) {
-            mat1.pad();
-            mat2.pad();
-        }
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                matrixVector.push_back(mat1(i, j) + mat2(i, j));
-            }
-        }
+        int rank1 = mat1.getRank();
+        int rank2 = mat2.getRank();
+        addition.add(mat1.vector, mat2.vector, rank1, rank2, matrixVector);
     }
+//    void add(matrix<T> &mat1, matrix<T> &mat2) {
+//        int n, m;
+//        n = std::max(mat1._rows, mat2._rows);
+//        m = std::max(mat1._columns, mat2._columns);
+//        if (mat1._rows * mat1._columns != mat2._rows * mat2._rows) {
+//            mat1.pad();
+//            mat2.pad();
+//        }
+//        for (int i = 0; i < n; i++) {
+//            for (int j = 0; j < m; j++) {
+//                matrixVector.push_back(mat1(i, j) + mat2(i, j));
+//            }
+//        }
+//    }
 
     void subtract(matrix<T> &mat1, matrix<T> &mat2) {
         int n, m;
@@ -122,9 +128,10 @@ public:
 
     int getColumns() { return _columns; }
 
+    int getRank() { return _columns * _rows; }
+
 
     /// Rotational work
-
     void rotate(int degree) {
         if (degree == 90) {
             rotate90pos();
@@ -135,7 +142,7 @@ public:
         } else {}
     }
 
-    void triangle_off_diagonal(std::string kind) {
+    void triangle_off_diagonal(std::string &kind) {
         if (_rows != _columns) {
             throw std::invalid_argument(
                     "Needs a Square Matrix");
@@ -179,6 +186,7 @@ private:
     std::vector<T> matrixVector;
     bool transposedMatrix = false;
     bool paddedMatrix = false;
+    mAddition addition;
 
     // Naive Multiplication
     void ikj(matrix<T> &mat1, matrix<T> &mat2) {
@@ -291,8 +299,6 @@ private:
                 break;
         }
     }
-
-
 };
 
 
