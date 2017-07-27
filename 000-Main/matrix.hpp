@@ -12,6 +12,7 @@
 #include "csvReader.hpp"
 #include "binaryOP.hpp"
 #include "binaryOP.cpp"
+#include "imTest.h"
 
 template<typename T>
 class matrix {
@@ -38,6 +39,7 @@ public:
     };
 
     ~matrix() {}
+
 
     /// Activate transpose
     void transpose(bool copy = false) {
@@ -165,6 +167,7 @@ private:
     bool transposedMatrix = false;
     bool paddedMatrix = false;
     binaryOP binaryOP;
+    imTest mTe;
 
     // Naive Multiplication
     void ikj(matrix<T> &mat1, matrix<T> &mat2) {
