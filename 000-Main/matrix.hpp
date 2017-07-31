@@ -12,12 +12,12 @@
 #include "csvReader.hpp"
 #include "binaryOP.hpp"
 #include "binaryOP.cpp"
+//#include "crossOP.hpp"
+#include "crossOP.cpp"
 
 template<typename T>
 class matrix {
 public:
-
-
     matrix(std::vector<T> &array, int rows, int columns) : _rows(rows),
                                                            _columns(columns),
                                                            vector(array.data()) {}
@@ -81,6 +81,7 @@ public:
         int rank2 = mat2.getRank();
         binaryOP.add(mat1.vector, mat2.vector, rank1, rank2, matrixVector);
     }
+
     void subtract(matrix<T> &mat1, matrix<T> &mat2) {
         int rank1 = mat1.getRank();
         int rank2 = mat2.getRank();
@@ -89,15 +90,13 @@ public:
     }
     /// Cross Operations
     void multiply(matrix<T> &mat1, matrix<T> &mat2) {
-        matrixVector.assign(_rows * _columns, 0);
-        vector = matrixVector.data();
-        if (mat1.getRows() == mat2.getRows() &&
-            mat1.getColumns() == mat2.getColumns()) {
-            multiply_tiled(mat1, mat2);
-        } else if (mat1.getColumns() != mat2.getRows()) {
-            throw std::invalid_argument(
-                    "Matrix 1 Columns do not match Matrix 2 Rows.");
-        } else { ikj(mat1, mat2); }
+        int row1, row2, col1, col2;
+        row1 = mat1.getRows();
+        row2 = mat2.getRows();
+        col1 = mat1.getColumns();
+        col2 = mat2.getColumns();
+        crossOP.multiply(mat1.vector, mat2.vector, row1, col1, row2, col2,
+                         matrixVector);
     }
 
 
@@ -158,42 +157,13 @@ public:
     }
 
 private:
-    int _rows;
     int _columns;
     T *vector;
-    std::vector<T> matrixVector;
     bool transposedMatrix = false;
     bool paddedMatrix = false;
     binaryOP binaryOP;
+    crossOP crossOP;
 
-    // Naive Multiplication
-    void ikj(matrix<T> &mat1, matrix<T> &mat2) {
-        for (int i = 0; i < mat1.getRows(); ++i) {
-            for (int k = 0; k < mat2.getColumns(); ++k) {
-                for (int j = 0; j < mat2.getRows(); ++j) {
-                    matrixVector[i * _rows + k] += mat1(i, j) * mat2(j, k);
-                }
-            }
-        }
-    }
-
-    // Tiling Multiplication
-    void multiply_tiled(matrix<T> &mat1, matrix<T> &mat2) {
-        long long int TILE = llround(mat1._rows / 2);
-        int N = (mat1._rows);
-        /* Use tile by tile  tiles */
-        /* Loop over all the tiles, stride by tile size */
-        for (int i = 0; i < N; i += TILE)
-            for (int j = 0; j < N; j += TILE)
-                for (int k = 0; k < N; k += TILE)
-                    /* Regular multiply inside the tiles */
-                    for (int y = i; y < i + TILE; y++) // rows
-                        for (int x = j; x < j + TILE; x++) // columns
-                            for (int z = k; z < k + TILE; z++) { // 2nd Rows
-                                matrixVector[y * _rows + x] +=
-                                        mat1(y, z) * mat2(z, x);
-                            }
-    }
 
     /// Rotation Work
     void rotate90pos() {
@@ -277,6 +247,10 @@ private:
                 break;
         }
     }
+
+protected:
+    int _rows;
+    std::vector<T> matrixVector;
 };
 
 

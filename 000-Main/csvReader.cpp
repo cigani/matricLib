@@ -29,7 +29,7 @@ void csvReader<T>::read() {
     rows = 0;
     columns = 0;
     std::ifstream fin(filename);
-//    assert(fin.is_open());
+    //    assert(fin.is_open());
     std::string line;
     while (std::getline(fin, line)) {                       // for each line
         std::istringstream sString(line);
@@ -55,7 +55,7 @@ T csvReader<T>::getValue(int i) {
 
 template<typename T>
 void csvReader<T>::print() {
-    for (auto n: mCSV) {
+    for (auto n : mCSV) {
         std::cout << n << std::endl;
     }
 }
@@ -84,5 +84,4 @@ void csvReader<T>::read(std::vector<T> &matrix_vector) {
                     std::stod(compString)); // add to the current row
         }
     }
-
 }

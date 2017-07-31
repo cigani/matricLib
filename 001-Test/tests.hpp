@@ -103,7 +103,6 @@ public:
     std::vector<int> nonSquareAdd2{0, 1, 2, 3, 4};
     std::vector<int> nonSquareAddAnswer{0, 2, 4, 6, 8, 10, 6, 7, 8, 9, 10};
 
-
     template<typename T>
     void testAsssertion(std::vector<T> expected, std::vector<T> actual,
                         std::string name);
@@ -152,7 +151,7 @@ public:
     matrixOffDiagonal(std::vector<T> &test_vector1, std::vector<T> &expected,
                       int rows, std::string kind, std::string name);
 
-    template<typename T>
+    template<class T>
     void
     matrixEqual(matrix<T> &theVector, std::vector<T> &expected, int row,
                 int col,
@@ -163,6 +162,5 @@ public:
                             std::vector<T> &test_vector2, int row2, int col2,
                             std::vector<T> &answer_vector, std::string name);
 };
-
 
 #endif //MATRIX_TESTS_H

@@ -62,7 +62,7 @@ int main() {
     tests.matrixOffDiagonal(tests.upper_off1_input, tests.upper_off1, 4,
                             "upper",
                             "Upper");
-//  Error Logging
+    //  Error Logging
     tests.iterateVectors(tests.mErrors);
 
     // Timing
@@ -75,8 +75,8 @@ void tests::matrixOffDiagonal(std::vector<T> &test_vector1,
                               std::vector<T> &expected, int rows,
                               std::string kind, std::string name) {
     clock_t tStart = clock();
-    matrix<int> actual(test_vector1, rows, rows);
-    matrix<int> holder(expected, rows, rows);
+    matrix<T> actual(test_vector1, rows, rows);
+    matrix<T> holder(expected, rows, rows);
     actual.triangle_off_diagonal(kind);
     double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
     matrixEqual(actual, expected, rows, rows, name);
@@ -87,19 +87,19 @@ void
 tests::matrixRotate(std::vector<T> &test_vector1, std::vector<T> &expected,
                     int rows, int columns, std::string name, int value) {
     clock_t tStart = clock();
-    matrix<int> actual(test_vector1, rows, columns);
-    matrix<int> holder(expected, rows, columns);
+    matrix<T> actual(test_vector1, rows, columns);
+    matrix<T> holder(expected, rows, columns);
     actual.rotate(value);
     double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
     testAsssertion(actual, holder, name, timer);
-//    for (auto i = 0; i < 4; i++) {
-//        std::cout << std::endl;
-//        for (auto j = 0; j < 4; j++) {
-////            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
-//            std::cout << actual(i, j) << " = " << holder(i, j) << "\t";
-//        }
-//    }
-//    std::cout << "\n" << "ABOVE: " << name << std::endl;
+    //    for (auto i = 0; i < 4; i++) {
+    //        std::cout << std::endl;
+    //        for (auto j = 0; j < 4; j++) {
+    ////            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
+    //            std::cout << actual(i, j) << " = " << holder(i, j) << "\t";
+    //        }
+    //    }
+    //    std::cout << "\n" << "ABOVE: " << name << std::endl;
 }
 
 template<typename T>
@@ -132,8 +132,6 @@ tests::matrixTranpose(std::vector<T> &test_vector,
     trans.transpose();
     double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
     testAsssertion(trans, real_trans, "Transpose", timer);
-
-
 }
 
 template<typename T>
@@ -150,7 +148,6 @@ tests::matrixSub(std::vector<T> &test_vector1, std::vector<T> &test_vector2,
     vec3.subtract(vec1, vec2);
     double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
     testAsssertion(vec3, vec_answer, name, timer);
-
 }
 
 template<typename T>
@@ -166,12 +163,12 @@ tests::matrixAdd(std::vector<T> &test_vector1, std::vector<T> &test_vector2,
     vec3.add(vec1, vec2);
     double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
     testAsssertion(vec3, vec_answer, name, timer);
-//    for (auto i = 0; i < 10; i++) {
-//        for (auto j = 0; j < 10; j++) {
-//            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
-//                      vec_answer(i, j) << " = " << vec3(i, j) << std::endl;
-//        }
-//    }
+    //    for (auto i = 0; i < 10; i++) {
+    //        for (auto j = 0; j < 10; j++) {
+    //            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
+    //                      vec_answer(i, j) << " = " << vec3(i, j) << std::endl;
+    //        }
+    //    }
 }
 
 template<typename T>
@@ -188,12 +185,12 @@ tests::matrixAddNonSquare(std::vector<T> &test_vector1, int row1, int col1,
     matrix<T> vec_answer(answer_vector, row3, col3);
     vec3.add(vec1, vec2);
     double timer = (double) (clock() - tStart) / CLOCKS_PER_SEC;
-//        for (auto i = 0; i < row3; i++) {
-//        for (auto j = 0; j < col3; j++) {
-//            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
-//                      vec_answer(i, j) << " = " << vec3(i, j) << std::endl;
-//        }
-//    }
+    //        for (auto i = 0; i < row3; i++) {
+    //        for (auto j = 0; j < col3; j++) {
+    //            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
+    //                      vec_answer(i, j) << " = " << vec3(i, j) << std::endl;
+    //        }
+    //    }
     testAsssertion(vec3, vec_answer, name, timer);
 }
 template<typename T>
@@ -202,8 +199,8 @@ void tests::matrixEqual(std::vector<T> &theVector, std::string a_name) {
     std::vector<T> test_vector;
     for (auto i = 0; i < 10; i++) {
         for (auto j = 0; j < 10; j++) {
-//            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
-//                      new_vector(i, j) << std::endl;
+            //            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
+            //                      new_vector(i, j) << std::endl;
             test_vector.push_back(new_vector(i, j));
         }
     }
@@ -217,8 +214,8 @@ tests::matrixEqual(matrix<T> &theVector, std::vector<T> &expected, int row,
     std::vector<T> test_vector;
     for (auto i = 0; i < row; i++) {
         for (auto j = 0; j < col; j++) {
-//            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
-//                      new_vector(i, j) << std::endl;
+            //            std::cout << "I: " << i << "\t" << "J: " << j << "\t" <<
+            //                      new_vector(i, j) << std::endl;
             test_vector.push_back(theVector(i, j));
         }
     }
@@ -233,8 +230,8 @@ void tests::testAsssertion(std::vector<T> expected,
         if (fabs(evaluate) > tolerance) {
             testErrorCode(name);
             break;
-//            std::cout << "Expected: " << expected[i] << " | "
-//                      << "Actual: " << actual[i] << "\n";
+            //            std::cout << "Expected: " << expected[i] << " | "
+            //                      << "Actual: " << actual[i] << "\n";
         }
     }
 };
@@ -257,13 +254,12 @@ void tests::testAsssertion(matrix<T> expected,
     }
 }
 
-
 void tests::iterateVectors(std::vector<std::string> &returns) {
     std::cout
             << "--------------------------------------------------------------"
             << "\n";
     if (returns.size() == 0) { std::cout << "No Errors"; }
-    else { for (auto n: returns) { std::cout << "Error: " << n << "\n"; }}
+    else { for (auto n : returns) { std::cout << "Error: " << n << "\n"; }}
     std::cout << std::endl;
     std::cout
             << "--------------------------------------------------------------"

@@ -57,5 +57,4 @@ public:
     T getValue(int i);
 };
 
-
 #endif //MATRIX_CSVREADER_H

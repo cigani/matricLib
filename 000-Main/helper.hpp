@@ -5,7 +5,6 @@
 #ifndef MATRIX_HELPER_H
 #define MATRIX_HELPER_H
 
-
 #include <vector>
 #include <stdexcept>
 #include <cmath>
@@ -38,6 +37,5 @@ public:
         return range(start, stop, IntType(1));
     }
 };
-
 
 #endif //MATRIX_HELPER_H
